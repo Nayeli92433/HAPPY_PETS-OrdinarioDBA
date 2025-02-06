@@ -12,22 +12,10 @@ export const Navbar = () => {
               <a className="nav-link active" href="/">Home</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/crear-cita">Crear Cita</a>
+              <a className="nav-link" href="/registrar-mascota">Servicios</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/ver-citas">Ver Citas</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/registrar-mascota">Registrar Mascota</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/registrar-dueño">Registrar Dueño</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/comentarios">Comentarios</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/historial-medico">Historial Médico</a>
+              <a className="nav-link" href="/registrar-dueño">Nuestro personal</a>
             </li>
           </ul>
         </div>
