@@ -3,14 +3,6 @@
   font-family: Arial, sans-serif;
 }
 
-/* Estilos para la sección Hero */
-.hero-section {
-  background-image: url('../assets/animals.jpg'); 
-  background-size: cover;
-  background-position: center;
-  padding: 100px 20px;
-}
-
 .hero-section h1 {
   font-size: 3.5rem;
   font-weight: bold;
@@ -33,4 +25,33 @@
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+/* Estilos para la sección Hero */
+.hero-section {
+  background-image: url('../assets/animals.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Imagen estática */
+  padding: 200px 5px;
+  position: relative; /* Para posicionar el navbar sobre la imagen */
+}
+
+.hero-section .opacity-container {
+  background-color: rgba(0, 0, 0, 0.4); 
+  color: white;
+  padding: 30px;
+  border-radius: 10px; 
+}
+
+/* Estilos para el botón morado */
+.hero-section .btn {
+  background-color: #db953b; /* Morado */
+  border-color: #800080; /* Morado */
+  color: white;
+}
+
+.hero-section .btn:hover {
+  background-color: #6a006a; /* Morado más oscuro en hover */
+  border-color: #6a006a;
 }
