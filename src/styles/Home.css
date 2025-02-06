@@ -32,9 +32,9 @@
   background-image: url('../assets/animals.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Imagen estática */
-  padding: 200px 5px;
-  position: relative; /* Para posicionar el navbar sobre la imagen */
+  background-attachment: fixed; 
+  padding: 100px 5px;
+  position: relative;
 }
 
 .hero-section .opacity-container {
@@ -54,4 +54,43 @@
 .hero-section .btn:hover {
   background-color: #6a006a; /* Morado más oscuro en hover */
   border-color: #6a006a;
+}
+
+/* Estilos personalizados para los cuadros */
+.custom-card {
+  background-color: #6c7575; /* Fondo azul */
+  color: rgb(126, 218, 210); /* Texto blanco */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+.custom-card:hover {
+  transform: translateY(-5px); /* Efecto de levantar el cuadro al pasar el mouse */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+}
+
+.custom-card .card-body {
+  padding: 20px; 
+}
+
+.custom-card .card-title {
+  font-size: 1.5rem; 
+  font-weight: bold;
+}
+
+.custom-card .btn-light {
+  background-color: rgb(108, 230, 209); /* Fondo blanco para el botón */
+  color: #ffffff; /* Texto azul */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Espaciado */
+  border-radius: 10px; /* Bordes redondeados */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  font-weight: bold; /* Negrita en el texto del botón */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.custom-card .btn-light:hover {
+  background-color: #ecafbc; /* Color al pasar el mouse sobre el botón */
+  cursor: pointer; /* Puntero cuando se pasa el mouse sobre el botón */
 }
