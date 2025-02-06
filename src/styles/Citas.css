@@ -1,0 +1,67 @@
+.appointment-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-and-image {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px; /* Espacio entre el formulario y la imagen */
+  }
+  
+  .appointment-form {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  input, select {
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .btn-submit {
+    padding: 10px 20px;
+    background-color: #800080; /* Morado */
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .btn-submit:hover {
+    background-color: #6a006a; /* Morado más oscuro */
+  }
+  
+  /* Imagen */
+  .image-container img {
+    width: 100%;
+    max-width: 500px; /* Ajusta el tamaño máximo de la imagen */
+    height: auto;
+    border-radius: 10px;
+  }
+  

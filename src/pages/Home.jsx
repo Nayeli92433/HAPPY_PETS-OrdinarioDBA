@@ -1,54 +1,54 @@
 import React from 'react';
 import '../styles/Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 const Home = () => {
   return (
     <div className="home-container">
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <a className="navbar-brand" href="/">Happy Pets</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link active" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/blog">Blog</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/services">Services</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/location">Location</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/veterinarian">Veterinarian</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
+      <Navbar />
       <div className="hero-section text-center text-white">
-        <div className="container">
+        <div className="container opacity-container">
           <h1 className="display-4">Happy Pets</h1>
-          <p className="lead">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-          <a href="/contact" className="btn btn-primary btn-lg">REGISTRATE</a>
+          <h2 className="subtitle">¡Bienvenidos a Happy Pets!</h2>
+          <p className="lead">
+            Nos alegra tener a tu mascota con nosotros. En Happy Pets nos dedicamos a ofrecer el mejor cuidado y atención para tu compañero, asegurándonos de que siempre esté saludable y feliz. ¡Gracias por confiar en nosotros!
+          </p>
+          
+          {/* Sección de los cuadros para registro e ingreso */}
+          <div className="row mt-4">
+            {/* Cuadro de Registro */}
+            <div className="col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h3 className="card-title">¡Regístrate y agenda citas para tu mascota!</h3>
+                  <p>
+                    Crea una cuenta en Happy Pets para llevar un control detallado de la salud y bienestar de tu mascota. 
+                    Accede a un historial médico completo y recibe alertas sobre tus citas y tratamientos recomendados.
+                  </p>
+                  <a href="/registro" className="btn btn-outline-primary">REGÍSTRATE AHORA</a>
+                </div>
+              </div>
+            </div>
+
+            {/* Cuadro de Ingreso */}
+            <div className="col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h3 className="card-title">Accede y agenda una cita para tu mascota</h3>
+                  <p>
+                    Si ya tienes una cuenta, ingresa para gestionar las citas de tu mascota. Accede a nuestras opciones de servicios y elige el mejor horario para tu próxima visita.
+                  </p>
+                  <a href="/ingreso" className="btn btn-outline-primary">INGRESA A TU CUENTA</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="footer bg-dark text-white text-center py-3">
-        <div className="container">
-          <p>&copy; 2023 Happy Pets. Todos los derechos reservados.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
