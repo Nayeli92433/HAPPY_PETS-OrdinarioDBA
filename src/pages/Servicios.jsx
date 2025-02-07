@@ -1,25 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import  ServiciosService  from "../services/ServiciosService"; // Importa la función
+import "../styles/Servicios.css";  
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
-const Servicios = () => {
-  const servicios = [
-    { id: 1, nombre: 'Consulta veterinaria', descripcion: 'Revisiones médicas y tratamientos.' },
-    { id: 2, nombre: 'Guardería', descripcion: 'Cuidado diario para tus mascotas.' },
-    { id: 3, nombre: 'Peluquería', descripcion: 'Baño, corte y arreglo personalizado.' },
-  ];
+const Services = () => {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const cargarServicios = async () => {
+      const data = await ServiciosService.obtenerServicios();
+      setServices(data);
+    };
+    cargarServicios();
+  }, []);
 
   return (
     <div>
-      <h1>Nuestros Servicios</h1>
-      <ul>
-        {servicios.map((servicio) => (
-          <li key={servicio.id}>
-            <h2>{servicio.nombre}</h2>
-            <p>{servicio.descripcion}</p>
-          </li>
-        ))}
-      </ul>
+      <Navbar />
+      <div className="services-container">
+        <h1 className="services-title">Nuestros Servicios</h1>
+        <div className="services-list">
+          {services.map((service) => (
+            <div className="service-card" key={service.id}>
+              <img src={`http://localhost:8080/${service.imagen}`} alt={service.nombre} />
+
+              <h3>{service.nombre}</h3>
+              <p>{service.descripcion}</p>
+              <p className="price">${service.precio}</p>
+              <button className="btn">Contratar</button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
 
-export default Servicios;
+export default Services;

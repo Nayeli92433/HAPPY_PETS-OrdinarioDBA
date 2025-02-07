@@ -1,0 +1,106 @@
+/* Estilos generales para la vista de servicios */
+.services-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #fef9f9;
+  /* Color suave de fondo */
+  padding: 50px 20px;
+}
+
+.services-title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #FF9F9F;
+  /* Color rosita suave */
+  margin-bottom: 40px;
+}
+
+/* Estilos para la lista de servicios */
+.services-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 50px;
+}
+
+
+.modal-image {
+  width: 100%;
+  max-width: 300px;
+  /* Ajusta el tamaño máximo de la imagen */
+  margin-bottom: 20px;
+  /* Espacio entre la imagen y el contenido */
+}
+
+.service-card {
+  background-color: #E4F9F5;
+  /* Fondo verde claro */
+  border-radius: 15px;
+  padding: 20px;
+  width: 280px;
+  /* Ancho fijo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  /* Efecto de levantar el cuadro */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.service-card img {
+  width: 100%;
+  /* Ancho completo del cuadro */
+  height: 250px;
+  /* Altura fija para las imágenes */
+  object-fit: cover;
+  /* Asegura que la imagen cubra el área sin distorsionarse */
+  border-radius: 10px;
+  /* Bordes redondeados en las imágenes */
+  margin-bottom: 15px;
+  /* Espacio entre la imagen y el título */
+}
+
+.service-card h3 {
+  font-size: 1.75rem;
+  color: #3F8D99;
+  /* Azul suave */
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: 1rem;
+  color: #4A4A4A;
+  /* Gris oscuro para la descripción */
+  margin-bottom: 15px;
+}
+
+.service-card .price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #f7c83e;
+  /* Amarillo suave para el precio */
+}
+
+/* Estilos para el botón de ver más o contratar */
+.service-card .btn {
+  background-color: #FF9F9F;
+  /* Botón rosita */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.service-card .btn:hover {
+  background-color: #FF6B6B;
+  /* Rosita más fuerte al pasar el mouse */
+  cursor: pointer;
+}
