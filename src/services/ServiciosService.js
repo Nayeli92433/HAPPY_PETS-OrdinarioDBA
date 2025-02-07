@@ -4,7 +4,7 @@ import axiosInstance from "../api/axiosConfig";
 const API_URL = '/servicios';
 
 
-const obtenerServicios = async () => {
+const getAll = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/servicios`);
     if (!response.ok) {
@@ -51,7 +51,7 @@ const deleteservicio = async (id) => {
 }
 
 export default {
-    obtenerServicios,
+  getAll,
     create,
     update,
     deleteservicio
