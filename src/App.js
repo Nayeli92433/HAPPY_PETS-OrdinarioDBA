@@ -13,6 +13,7 @@ import ServiciosAdmin from './pages/ServiciosAdmin';
 import VeterinariosAdmin from './pages/Veterinario';
 import MascotasAdmin from './pages/Mascotas';
 import ComentariosPage from './pages/Comentarios';
+import VerCitas from './pages/VerCitas'
 
 const App = () => {
   return (
@@ -29,10 +30,7 @@ const App = () => {
         <Route path="/veterinarios" element={<VeterinariosAdmin/>} />
         <Route path="/mascotas" element={<MascotasAdmin/>} />
         <Route path="/comentarios" element={<ComentariosPage/>} />
-
-
-
-
+        <Route path="/citasVer" element={<VerCitas/>} />
 
       </Routes>
     </Router>
