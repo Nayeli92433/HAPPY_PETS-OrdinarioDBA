@@ -38,40 +38,31 @@
 }
 
 .hero-section .opacity-container {
-  background-color: rgba(0, 0, 0, 0.4); 
+  background-color: rgba(122, 53, 53, 0.486); 
   color: white;
   padding: 30px;
   border-radius: 10px; 
 }
 
-/* Estilos para el botón morado */
-.hero-section .btn {
-  background-color: #db953b; /* Morado */
-  border-color: #800080; /* Morado */
-  color: white;
-}
-
-.hero-section .btn:hover {
-  background-color: #6a006a; /* Morado más oscuro en hover */
-  border-color: #6a006a;
-}
-
-/* Estilos personalizados para los cuadros */
 .custom-card {
-  background-color: #6c7575; /* Fondo azul */
-  color: rgb(126, 218, 210); /* Texto blanco */
   border-radius: 15px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  height: 100%; 
 }
 
 .custom-card:hover {
   transform: translateY(-5px); /* Efecto de levantar el cuadro al pasar el mouse */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
 }
 
 .custom-card .card-body {
   padding: 20px; 
+  background-color:  rgb(210, 255, 246);
 }
 
 .custom-card .card-title {
@@ -94,3 +85,4 @@
   background-color: #ecafbc; /* Color al pasar el mouse sobre el botón */
   cursor: pointer; /* Puntero cuando se pasa el mouse sobre el botón */
 }
+

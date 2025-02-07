@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Servicios from './pages/Servicios';
 import Galeria from './pages/Galeria';
 import Admin from './pages/Admin';
-import Citas from './pages/CrearCita'
+import Citas from './pages/CrearCita';
 
 const App = () => {
   return (

@@ -25,7 +25,7 @@ const Home = () => {
                   <h3 className="card-title">¡Regístrate y agenda citas para tu mascota!</h3>
                   <p>
                     Crea una cuenta en Happy Pets para llevar un control detallado de la salud y bienestar de tu mascota. 
-                    Accede a un historial médico completo y recibe alertas sobre tus citas y tratamientos recomendados.
+                    Accede a un historial médico completo.
                   </p>
                   <a href="/registro" className="btn btn-light">REGÍSTRATE AHORA</a>
                 </div>
@@ -40,7 +40,7 @@ const Home = () => {
                   <p>
                     Si ya tienes una cuenta, ingresa para gestionar las citas de tu mascota. Accede a nuestras opciones de servicios y elige el mejor horario para tu próxima visita.
                   </p>
-                  <a href="/ingreso" className="btn btn-light">INGRESA A TU CUENTA</a>
+                  <a href="/citas" className="btn btn-light">INGRESA A TU CUENTA</a>
                 </div>
               </div>
             </div>
