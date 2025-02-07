@@ -1,17 +1,26 @@
+/* Estilos generales para el body de la página */
+body {
+  background-color: #ffbbbb;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
 /* Estilos generales para la vista de servicios */
 .services-container {
-  font-family: 'Arial', sans-serif;
-  background-color: #fef9f9;
-  /* Color suave de fondo */
   padding: 50px 20px;
+  height: 100%;
+  width: 100%;
 }
+
 
 .services-title {
   text-align: center;
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: bold;
-  color: #FF9F9F;
-  /* Color rosita suave */
+  color: #ffffff;
   margin-bottom: 40px;
 }
 
@@ -103,4 +112,30 @@
   background-color: #FF6B6B;
   /* Rosita más fuerte al pasar el mouse */
   cursor: pointer;
+}
+
+
+/* Estilo para el mensaje de "No hay servicios disponibles" */
+.no-services-message {
+  font-size: 1.5rem;
+  color: #FF6B6B;
+  text-align: center;
+  margin-top: 100px; /* Menos margen superior */
+  padding: 20px 40px; /* Menos padding */
+  background-color: #aef7eb;
+  border: 2px solid #FF6B6B;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos */
+  justify-content: center;
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+/* Estilo para la imagen dentro del mensaje "No hay servicios" */
+.no-services-image {
+  width: 100px; /* Tamaño de la imagen */
+  height: 100px; /* Tamaño de la imagen */
+  margin-bottom: 20px; /* Espacio debajo de la imagen */
 }
