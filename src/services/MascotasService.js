@@ -5,6 +5,7 @@ const API_URL = '/mascotas';
 const getAll = async () => {
     try {
         const response = await axiosInstance.get(API_URL);
+<<<<<<< HEAD
         return response.data;    
     } catch (error) {
         throw error.response.data;
@@ -28,21 +29,46 @@ const create = async (mascota) => {
 const update = async (id,mascota) => {
     try {
         const response = await axiosInstance.put(`${API_URL}/${id}`,mascota)
+=======
+>>>>>>> c9a9881 (Avances)
         return response.data;
     } catch (error) {
         throw error.response.data;
     }
-   
+
+}
+
+const create = async (mascota) => {
+    try {
+        console.log("Datos a enviar", mascota)
+        const response = await axiosInstance.post(API_URL, mascota);
+        return response.data;
+    } catch (error) {
+        console.error("error al registrar el dueño", error.response ? error.response.data : error.message)
+        throw error.response.data;
+    }
+
+}
+
+const update = async (id, mascota) => {
+    try {
+        const response = await axiosInstance.put(`${API_URL}/${id}`, mascota)
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+
 }
 
 const deletemascota = async (id) => {
     try {
-    await axiosInstance.delete(`${API_URL}/${id}`)
-        
+        await axiosInstance.delete(`${API_URL}/${id}`)
+
     } catch (error) {
         throw error.response.data
     }
 }
+<<<<<<< HEAD
 // Método para validar el duenioId
 const validateDuenioId = async (duenioId) => {
     try {
@@ -66,11 +92,27 @@ const validateDuenioId = async (duenioId) => {
 };
 
 
+=======
+const getByDuenoId = async (idDueno) => {
+    try {
+        const response = await axiosInstance.get(`${API_URL}/dueno/${idDueno}`);
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+>>>>>>> c9a9881 (Avances)
 
 export default {
     getAll,
     create,
     update,
+<<<<<<< HEAD
     deletemascota,
     validateDuenioId
+=======
+    getByDuenoId,
+    deletemascota,
+   
+>>>>>>> c9a9881 (Avances)
 }
