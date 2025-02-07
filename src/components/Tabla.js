@@ -62,7 +62,7 @@ export function CustomTable({ data, columns, onEdit, onDelete, searchPlaceholder
                                                 </button>
                                             )}
                                             {onDelete && (
-                                                <button className="btn btn-danger" onClick={() => onDelete(item)}>
+                                                <button className="btn btn-danger" onClick={() => onDelete(item.id)}>
                                                     🗑️
                                                 </button>
                                             )}

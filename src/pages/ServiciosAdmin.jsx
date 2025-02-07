@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { CustomTable } from '../components/Tabla';
 import apiServicios from '../services/ServiciosService';
+import NavAdmin, { Navbar } from '../components/NavAdmin'; // Asegúrate de importar tu plantilla NavAdmin
 
 export default function ServiciosAdmin() {
   const [formData, setFormData] = useState({ nombre: '', descripcion: '', precio: '' });
@@ -48,6 +49,7 @@ export default function ServiciosAdmin() {
   };
 
   const handleDelete = async (id) => {
+    console.log("aqui entra en el metodo de eliminar", id);
     const confirmacion = await Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción no se puede deshacer',
@@ -75,29 +77,32 @@ export default function ServiciosAdmin() {
   ];
 
   return (
-    <div className="container mt-5">
-      <CustomTable data={servicios} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card shadow p-4">
-            <h2 className="text-center mb-4">{editando ? 'Actualizar Servicio' : 'Registro de Servicio'}</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label">Nombre del Servicio</label>
-                <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Descripción</label>
-                <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange} required></textarea>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Precio ($)</label>
-                <input type="number" className="form-control" name="precio" value={formData.precio} onChange={handleChange} required />
-              </div>
-              <button type="submit" className={`btn ${editando ? 'btn-warning' : 'btn-primary'} w-100`}>
-                {editando ? 'Actualizar Servicio' : 'Registrar Servicio'}
-              </button>
-            </form>
+    <div style={{ background: '#fef9f9', minHeight: '100vh' }}>
+      <Navbar /> {/* Aquí insertas tu plantilla NavAdmin */}
+      <div className="container mt-5">
+        <CustomTable data={servicios} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <div className="card shadow p-4">
+              <h2 className="text-center mb-4">{editando ? 'Actualizar Servicio' : 'Registro de Servicio'}</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label">Nombre del Servicio</label>
+                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Descripción</label>
+                  <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange} required></textarea>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Precio ($)</label>
+                  <input type="number" className="form-control" name="precio" value={formData.precio} onChange={handleChange} required />
+                </div>
+                <button type="submit" className={`btn ${editando ? 'btn-warning' : 'btn-primary'} w-100`}>
+                  {editando ? 'Actualizar Servicio' : 'Registrar Servicio'}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

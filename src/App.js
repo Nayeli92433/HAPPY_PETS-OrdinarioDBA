@@ -8,6 +8,8 @@ import Citas from './pages/CrearCita'
 import Registro from './pages/RegistrarDueño'
 import LoginAdmin from './pages/LoginAdmin'
 import ServiciosAdmin from './pages/ServiciosAdmin';
+import VeterinariosAdmin from './pages/Veterinario';
+import MascotasAdmin from './pages/Mascotas';
 
 const App = () => {
   return (
@@ -21,6 +23,10 @@ const App = () => {
         <Route path="/registro" element={<Registro/>} />
         <Route path="/login" element={<LoginAdmin/>} />
         <Route path="/adminServicios" element={<ServiciosAdmin/>} />
+        <Route path="/veterinarios" element={<VeterinariosAdmin/>} />
+        <Route path="/mascotas" element={<MascotasAdmin/>} />
+
+
 
 
       </Routes>

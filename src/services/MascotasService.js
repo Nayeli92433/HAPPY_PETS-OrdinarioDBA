@@ -16,6 +16,7 @@ const create = async (mascota) => {
     try {
         console.log("Datos a enviar",mascota)
         const response = await axiosInstance.post(API_URL,mascota);
+        console.log("Respuesta de la API:", response.data); 
         return response.data;    
     } catch (error) {
         console.error("error al registrar el dueño", error.response ? error.response.data : error.message)
@@ -42,10 +43,34 @@ const deletemascota = async (id) => {
         throw error.response.data
     }
 }
+// Método para validar el duenioId
+const validateDuenioId = async (duenioId) => {
+    try {
+        const response = await axiosInstance.get(`/duenios/${duenioId}`);
+        console.log("response service", response);
+
+        // Verificar que la respuesta tiene la propiedad 'data' y un 'id' válido
+        if (response.status === 200 && response.data && response.data.id) {
+            console.log("El dueño existe:", response.data);
+            return true; // El dueño existe
+        }
+
+        // Si no tiene la propiedad 'id' o es una respuesta inesperada
+        console.error("Respuesta inesperada, 'data' o 'id' no están presentes");
+        return false; // El dueño no existe o la respuesta es incorrecta
+    } catch (error) {
+        // Muestra detalles más precisos si el error tiene respuesta
+        console.error("Error al validar el dueño:", error.response ? error.response.data : error.message);
+        return false; // Si ocurre algún error, consideramos que el dueño no existe
+    }
+};
+
+
 
 export default {
     getAll,
     create,
     update,
-    deletemascota
+    deletemascota,
+    validateDuenioId
 }
