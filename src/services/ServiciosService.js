@@ -1,6 +1,6 @@
 import API_BASE_URL from '../config/config';
 
-const obtenerServicios = async () => {
+const getAll = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/servicios`);
     if (!response.ok) {
@@ -16,5 +16,5 @@ const obtenerServicios = async () => {
 };
 
 export default {
-    obtenerServicios,
+  getAll,
 }

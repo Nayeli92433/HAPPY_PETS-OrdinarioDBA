@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ServiciosService from "../services/ServiciosService"; // Importa la función
+import ServiciosService from "../services/ServiciosService"; 
 import "../styles/Servicios.css";  
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
@@ -11,7 +11,7 @@ const Services = () => {
 
   useEffect(() => {
     const cargarServicios = async () => {
-      const data = await ServiciosService.obtenerServicios();
+      const data = await ServiciosService.getAll();
       setServices(data);
     };
     cargarServicios();
