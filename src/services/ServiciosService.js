@@ -4,20 +4,18 @@ import axiosInstance from "../api/axiosConfig";
 const API_URL = '/servicios';
 
 
+
 const getAll = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/servicios`);
-    if (!response.ok) {
-      throw new Error('Error al obtener los servicios');
-    }
-    return await response.json();
+    const response = await axiosInstance.get(API_URL);
+    return response.data;  
   } catch (error) {
-    console.error('Error:', error);
-    return [];
+    console.error('Error al obtener los servicios:', error.response ? error.response.data : error.message);
+    return [];  
   }
-
-  
 };
+
+
 const create = async (servicio) => {
   try {
       console.log("Datos a enviar",servicio)

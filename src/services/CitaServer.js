@@ -1,24 +1,21 @@
 import API_BASE_URL from '../config/config';
+import axiosInstance from "../api/axiosConfig";
+const API_URL = '/citas';
 
 const create = async (datosCita) => {
   try {
-    const respuesta = await fetch(`${API_BASE_URL}/citas`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datosCita),
-    });
-
-    if (!respuesta.ok) {
-      throw new Error('Error al crear la cita');
-    }
-
-    return await respuesta.json();
+    // Realizar la solicitud POST
+    const respuesta = await axiosInstance.post(API_URL, datosCita);
+    
+    // Retornar la respuesta completa (incluyendo status)
+    return respuesta; // Aquí devolvemos toda la respuesta
   } catch (error) {
-    console.error('Error:', error);
+    // Manejo de errores: Mostrar detalles del error
+    console.error('Error al crear la cita:', error.response ? error.response.data : error.message);
+    
+    // Lanzar el error para ser manejado por el componente que hace la llamada
     throw error;
   }
 };
 
-export default crearCita;
+export default { create };
