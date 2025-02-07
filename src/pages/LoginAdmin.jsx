@@ -35,8 +35,8 @@ const LoginAdmin = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-20" style={{ backgroundColor: "white"}}>
-      <div className="card p-4" style={{ maxWidth: "400px", width: "100%" }}>
+    <div className="d-flex justify-content-center align-items-center vh-20" style={{ backgroundColor: "white" ,width:'400px'}}>
+      <div className="card p-4" style={{width: "400%" }}>
         <div className="text-center mb-4">
           <img src={logoImg} alt="Logo" style={{ width: "100px", height: "100px" }} />
         </div>

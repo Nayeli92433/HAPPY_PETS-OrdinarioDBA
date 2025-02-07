@@ -130,7 +130,6 @@ export default function MascotasAdmin() {
     { header: 'Especie', accessor: 'especie' },
     { header: 'Raza', accessor: 'raza' },
     { header: 'Sexo', accessor: 'sexo' },
-    { header: 'Dueño', accessor: 'duenio.nombre' }
   ];
 
   return (
