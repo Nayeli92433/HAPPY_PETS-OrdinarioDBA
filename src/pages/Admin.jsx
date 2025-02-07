@@ -20,7 +20,7 @@ const Admin = () => {
         const [dueñosData, mascotasData, serviciosData, veterinariosData] = await Promise.all([
           duenioService.getAll(),
           mascotaService.getAll(),
-          servicioService.obtenerServicios(),
+          servicioService.getAll(),
           veterinarioService.getAll(),
         ]);
 

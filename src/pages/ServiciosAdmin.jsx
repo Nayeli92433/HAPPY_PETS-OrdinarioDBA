@@ -16,7 +16,7 @@ export default function ServiciosAdmin() {
   }, []);
 
   const cargarServicios = async () => {
-    const data = await apiServicios.obtenerServicios();
+    const data = await apiServicios.getAll();
     setServicios(data);
   };
 
