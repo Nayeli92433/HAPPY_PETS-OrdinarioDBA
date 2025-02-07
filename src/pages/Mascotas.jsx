@@ -3,10 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { CustomTable } from '../components/Tabla';
 import apiMascotas from '../services/MascotasService';
-import apiDuenios from '../services/DuenioService'
+import apiDuenios from '../services/DuenioService';
 import { Navbar } from '../components/NavAdmin';
 
 export default function MascotasAdmin() {
+  // Estado inicial: el campo 'duenio' es un objeto con propiedad 'id'
   const [formData, setFormData] = useState({
     nombre: '',
     especie: '',
@@ -14,13 +15,12 @@ export default function MascotasAdmin() {
     edad: '',
     peso: '',
     sexo: '',
-    duenioId: ''
+    duenio: { id: '' }
   });
   const [mascotas, setMascotas] = useState([]);
-  const [duenos, setDuenos] = useState([]); // Lista de dueños
+  const [duenos, setDuenos] = useState([]); // Lista de dueños para el combo
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
-  const [duenioValido, setDuenioValido] = useState(true); // Para controlar la validación del ID del dueño
 
   useEffect(() => {
     cargarMascotas();
@@ -28,34 +28,40 @@ export default function MascotasAdmin() {
   }, []);
 
   const cargarMascotas = async () => {
-    const data = await apiMascotas.getAll();
-    setMascotas(data);
+    try {
+      const data = await apiMascotas.getAll();
+      setMascotas(data);
+    } catch (error) {
+      console.error("Error al cargar mascotas:", error);
+    }
   };
 
   const cargarDuenos = async () => {
     try {
-      const response = await apiDuenios.getAll(); // Asumimos que tienes una función para obtener los dueños
-      setDuenos(response); // Lista de dueños
+      const response = await apiDuenios.getAll(); // Obtener la lista de dueños
+      setDuenos(response);
     } catch (error) {
-      console.error("Error al cargar los dueños:", error);
+      console.error("Error al cargar dueños:", error);
     }
   };
 
+  // Maneja cambios en los campos del formulario
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'duenio') {
+      // Actualiza el objeto anidado 'duenio' con el id seleccionado
+      setFormData({ ...formData, duenio: { id: value } });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
+  // Envía el formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Verificamos si el ID del dueño es válido
-    if (!duenioValido) {
-      Swal.fire('Error', 'El ID del dueño no es válido', 'error');
-      return; // No se ejecuta el envío si el dueño no es válido
-    }
+    console.log("Datos a enviar", formData); // Verificar en consola el JSON a enviar
 
     try {
-      // Si estamos editando, actualizamos la mascota, de lo contrario, la creamos
       if (editando) {
         const response = await apiMascotas.update(idEditando, formData);
         Swal.fire('Actualizado', 'Mascota actualizada correctamente', 'success');
@@ -63,8 +69,7 @@ export default function MascotasAdmin() {
         const response = await apiMascotas.create(formData);
         Swal.fire('Guardado', 'Mascota registrada correctamente', 'success');
       }
-
-      // Limpiar el formulario después de guardar o actualizar
+      // Limpiar el formulario y recargar la lista de mascotas
       setFormData({
         nombre: '',
         especie: '',
@@ -72,16 +77,19 @@ export default function MascotasAdmin() {
         edad: '',
         peso: '',
         sexo: '',
-        duenioId: ''
+        duenio: { id: '' }
       });
       setEditando(false);
-      cargarMascotas(); // Recargamos las mascotas para mostrar los cambios
+      cargarMascotas();
     } catch (error) {
+      console.error("Error al guardar la mascota:", error);
       Swal.fire('Error', 'Hubo un problema al guardar la mascota', 'error');
     }
   };
-  
+
+  // Maneja la edición: carga los datos de la mascota seleccionada
   const handleEdit = (item) => {
+    console.log("Editando mascota con dueño id:", item.duenio.id);
     setFormData({
       nombre: item.nombre,
       especie: item.especie,
@@ -89,12 +97,13 @@ export default function MascotasAdmin() {
       edad: item.edad,
       peso: item.peso,
       sexo: item.sexo,
-      duenioId: item.duenio.id
+      duenio: { id: item.duenio.id }
     });
     setEditando(true);
     setIdEditando(item.id);
   };
 
+  // Maneja el borrado de una mascota
   const handleDelete = async (id) => {
     const confirmacion = await Swal.fire({
       title: '¿Estás seguro?',
@@ -132,7 +141,9 @@ export default function MascotasAdmin() {
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card shadow p-4">
-              <h2 className="text-center mb-4">{editando ? 'Actualizar Mascota' : 'Registro de Mascota'}</h2>
+              <h2 className="text-center mb-4">
+                {editando ? 'Actualizar Mascota' : 'Registro de Mascota'}
+              </h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Nombre de la Mascota</label>
@@ -197,7 +208,7 @@ export default function MascotasAdmin() {
                     onChange={handleChange}
                     required
                   >
-                     <option value="">Seleccione sexo</option>
+                    <option value="">Seleccione sexo</option>
                     <option value="Macho">Macho</option>
                     <option value="Hembra">Hembra</option>
                   </select>
@@ -206,15 +217,15 @@ export default function MascotasAdmin() {
                   <label className="form-label">Dueño</label>
                   <select
                     className="form-control"
-                    name="duenioId"
-                    value={formData.duenioId}
+                    name="duenio"
+                    value={formData.duenio.id}
                     onChange={handleChange}
                     required
                   >
                     <option value="">Seleccione un dueño</option>
                     {duenos.map((duenio) => (
                       <option key={duenio.id} value={duenio.id}>
-                        {duenio.nombre}
+                        {duenio.nombre} {duenio.apellido}
                       </option>
                     ))}
                   </select>
