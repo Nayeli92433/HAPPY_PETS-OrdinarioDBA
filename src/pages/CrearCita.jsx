@@ -253,8 +253,8 @@ const CreateAppointment = () => {
                           name="mascotaSeleccionada"
                           value={formData.mascotaSeleccionada}
                           onChange={handleChange}
-                          required
-                        >
+                          required>
+                            
                           <option value="">Seleccione una mascota</option>
                           {mascotas.length === 0 ? (
                             <option value="" disabled>No hay mascotas registradas para este dueño</option>
@@ -324,6 +324,7 @@ const CreateAppointment = () => {
                               </option>
                             ))}
                           </select>
+
 
                         </div>
 
