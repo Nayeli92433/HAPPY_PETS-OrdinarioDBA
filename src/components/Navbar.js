@@ -1,4 +1,17 @@
+import { useState } from 'react';
+import admin from '../assets/avatar-de-usuario-con-marca-de-verificacion.png'
+import Modal from './Modal';
+import LoginAdmin from '../pages/LoginAdmin';
 export const Navbar = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  const handleShow = () => {
+    setShowModal(true);
+    setModalContent(<LoginAdmin showModal={true} handleClose={handleClose} />);
+  };
+
+  const handleClose = () => setShowModal(false);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -29,9 +42,27 @@ export const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link" href="/historial-medico">Historial Médico</a>
             </li>
+            <li className="nav-item ms-5">
+            <button
+                className="btn btn-link"
+                onClick={handleShow}
+                style={{ padding: 0 }}
+              >
+                <img
+                  src={admin}
+                  alt="Perfil"
+                  style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+                />
+              </button>
+            </li>
           </ul>
         </div>
       </div>
+      <Modal
+        show={showModal} 
+        handleClose={handleClose}>
+        {modalContent}
+      </Modal>
     </nav>
   );
 };

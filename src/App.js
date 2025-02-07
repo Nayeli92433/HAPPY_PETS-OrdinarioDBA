@@ -6,6 +6,7 @@ import Galeria from './pages/Galeria';
 import Admin from './pages/Admin';
 import Citas from './pages/CrearCita'
 import Registro from './pages/RegistrarDueño'
+import LoginAdmin from './pages/LoginAdmin'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/citas" element={<Citas />} />
         <Route path="/registro" element={<Registro/>} />
+        <Route path="/login" element={<LoginAdmin/>} />
 
       </Routes>
     </Router>
