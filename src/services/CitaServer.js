@@ -5,10 +5,10 @@ const API_URL = '/citas';
 const create = async (datosCita) => {
   try {
     // Realizar la solicitud POST
-    const respuesta = await axiosInstance.post(API_URL, datosCita);
+    const response = await axiosInstance.post(API_URL, datosCita);
     
     // Retornar la respuesta completa (incluyendo status)
-    return respuesta; // Aquí devolvemos toda la respuesta
+    return response; // Aquí devolvemos toda la respuesta
   } catch (error) {
     // Manejo de errores: Mostrar detalles del error
     console.error('Error al crear la cita:', error.response ? error.response.data : error.message);
