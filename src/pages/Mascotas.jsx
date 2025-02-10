@@ -93,9 +93,6 @@ export default function MascotasAdmin() {
   // Envía el formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validarFormulario()) return; // Si la validación falla, no envía el formulario
-
     console.log("Datos a enviar", formData); // Verificar en consola el JSON a enviar
 
     try {
@@ -170,87 +167,107 @@ export default function MascotasAdmin() {
   ];
 
   return (
-    <div style={{ background: '#fef9f9', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: "pink" }}>
       <Navbar />
-      <div className="container mt-5">
+      <div className="container mt-5 flex-grow-1" style={{marginBottom:"80px" }}>
         <CustomTable data={mascotas} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
         <div className="row justify-content-center">
-          <div className="col-md-6">
-            <div className="card shadow p-4">
-              <h2 className="text-center mb-4">
-                {editando ? 'Actualizar Mascota' : 'Registro de Mascota'}
-              </h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Nombre de la Mascota</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                  />
+          <div className="col-md-8">
+            <div className="card shadow p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", borderRadius: "20px" }}>
+              <h2 className="text-center mb-4">{editando ? 'Actualizar Mascota' : 'Registro de Mascota'}</h2>
+              <form onSubmit={handleSubmit} style={{ marginBottom: '15px' }}>
+                <div className="row">
+                  {/* Columna Izquierda */}
+                  <div className="col-md-6 pe-3">
+                    <div className="mb-3">
+                      <label className="form-label text-white">Nombre de la Mascota</label>
+                      <input
+                        
+                        className="form-control form-control-lg"
+                        name="nombre"
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                        
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label text-white">Especie</label>
+                      <input
+                        
+                        className="form-control form-control-lg"
+                        name="especie"
+                        value={formData.especie}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                        
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label text-white">Raza</label>
+                      <input
+                        
+                        className="form-control form-control-lg"
+                        name="raza"
+                        value={formData.raza}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                      />
+                    </div>
+                  </div>
+  
+                  {/* Columna Derecha */}
+                  <div className="col-md-6 ps-3">
+                    <div className="mb-3">
+                      <label className="form-label text-white">Edad (años)</label>
+                      <input
+                        
+                        className="form-control form-control-lg"
+                        name="edad"
+                        value={formData.edad}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                        
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label text-white">Peso (kg)</label>
+                      <input
+                        
+                        className="form-control form-control-lg"
+                        name="peso"
+                        value={formData.peso}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                      
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label text-white">Sexo</label>
+                      <select
+                        className="form-control form-control-lg"
+                        name="sexo"
+                        value={formData.sexo}
+                        onChange={handleChange}
+                        style={{ borderRadius: "10px" }}
+                        
+                      >
+                        <option value="">Seleccione sexo</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Hembra">Hembra</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Especie</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="especie"
-                    value={formData.especie}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Raza</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="raza"
-                    value={formData.raza}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Edad (años)</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="edad"
-                    value={formData.edad}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Peso (kg)</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="peso"
-                    value={formData.peso}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Sexo</label>
+                  <label className="form-label text-white">Dueño</label>
                   <select
-                    className="form-control"
-                    name="sexo"
-                    value={formData.sexo}
-                    onChange={handleChange}
-                  >
-                    <option value="">Seleccione sexo</option>
-                    <option value="Macho">Macho</option>
-                    <option value="Hembra">Hembra</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Dueño</label>
-                  <select
-                    className="form-control"
+                    className="form-control form-control-lg"
                     name="duenio"
                     value={formData.duenio.id}
                     onChange={handleChange}
+                    style={{ borderRadius: "10px" }}
+                    
                   >
                     <option value="">Seleccione un dueño</option>
                     {duenos.map((duenio) => (
@@ -269,5 +286,5 @@ export default function MascotasAdmin() {
         </div>
       </div>
     </div>
-  );
+  );  
 }

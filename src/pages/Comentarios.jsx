@@ -2,22 +2,16 @@ import React, { useEffect, useState } from "react";
 import ComentariosService from "../services/ComentariosService";
 import { Navbar } from "../components/Navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ServiciosService from "../services/ServiciosService";
-import DuenioService from "../services/DuenioService";
-import Swal from "sweetalert2";
-
 
 const ComentariosPage = () => {
   const [comentarios, setComentarios] = useState([]);
-  const [servicios, setServicios] = useState([]);
-  const [duenios, setDuenios] = useState([]);
   const [nuevoComentario, setNuevoComentario] = useState({
-    id: "",
+    id: "", // ID para saber si estamos editando un comentario existente
     mensaje: "",
     fecha: "",
     calificacion: "",
     idServicio: "",
-    id_duenio: "",
+    idDueno: "", // Asegúrate de incluir el idDueno
   });
 
   useEffect(() => {
@@ -32,31 +26,6 @@ const ComentariosPage = () => {
     cargarComentarios();
   }, []);
 
-  useEffect(() => {
-    async function cargarServicios() {
-      try {
-        // Reemplaza esto con la llamada a tu API real
-        const data = await ServiciosService.getAll(); 
-        setServicios(data);
-      } catch (error) {
-        console.error("Error cargando servicios:", error);
-      }
-    }
-
-    async function cargarDuenios() {
-      try {
-        // Reemplaza esto con la llamada a tu API real
-        const data = await DuenioService.getAll(); 
-        setDuenios(data);
-      } catch (error) {
-        console.error("Error cargando dueños:", error);
-      }
-    }
-
-    cargarServicios();
-    cargarDuenios();
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNuevoComentario((prevState) => ({
@@ -65,24 +34,8 @@ const ComentariosPage = () => {
     }));
   };
 
-  const validarCampos = () => {
-    const { mensaje, fecha, calificacion, idServicio, id_duenio } = nuevoComentario;
-    if (!mensaje || !fecha || !calificacion || !idServicio || !id_duenio) {
-      Swal.fire("Error", "Todos los campos son obligatorios", "error");
-      return false;
-    }
-    if (isNaN(calificacion) || Number(calificacion) < 1 || Number(calificacion) > 5) {
-      Swal.fire("Error", "La calificación debe ser un número entre 1 y 5", "error");
-      return false;
-    }
-    return true;
-  };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validarCampos()) return;
 
     const comentarioData = {
       id: nuevoComentario.id,
@@ -90,60 +43,50 @@ const ComentariosPage = () => {
       mensaje: nuevoComentario.mensaje,
       calificacion: parseInt(nuevoComentario.calificacion),
       idServicio: nuevoComentario.idServicio,
-      id_duenio: nuevoComentario.id_duenio,
+      idDueno: nuevoComentario.idDueno, // Incluyendo el idDueno en el envío
     };
 
     try {
       let respuesta;
       if (nuevoComentario.id) {
+        // Si el ID está presente, se actualiza el comentario
         respuesta = await ComentariosService.guardar(comentarioData);
       } else {
+        // Si el ID no está presente, se guarda un nuevo comentario
         respuesta = await ComentariosService.guardar({
-          id_duenio: comentarioData.id_duenio,
           comentarios: [comentarioData],
         });
       }
 
       setComentarios((prevComentarios) => {
         if (nuevoComentario.id) {
+          // Actualizar comentario
           return prevComentarios.map((comentario) =>
             comentario.id === nuevoComentario.id ? respuesta : comentario
           );
         } else {
+          // Agregar nuevo comentario
           return [...prevComentarios, respuesta];
         }
       });
 
-      setNuevoComentario({ mensaje: "", fecha: "", calificacion: "", idServicio: "", id_duenio: "", id: "" });
-      Swal.fire("Éxito", "Comentario guardado correctamente", "success");
-
+      setNuevoComentario({ mensaje: "", fecha: "", calificacion: "", idServicio: "", idDueno: "", id: "" });
     } catch (error) {
       console.error("Error al guardar comentario:", error);
     }
   };
 
+
   const handleBorrar = async (comentarioId) => {
-    const resultado = await Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción no se puede deshacer.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    });
-  
-    if (resultado.isConfirmed) {
-      try {
-        await ComentariosService.eliminarPorId(comentarioId);
-        setComentarios(comentarios.filter((comentario) => comentario.id !== comentarioId));
-        Swal.fire("Eliminado", "Comentario eliminado correctamente", "success");
-      } catch (error) {
-        console.error("Error eliminando comentario:", error);
-        Swal.fire("Error", "No se pudo eliminar el comentario", "error");
-      }
+    console.log("id del comentario", comentarioId);
+    try {
+      await ComentariosService.eliminarPorId(comentarioId);
+      setComentarios(comentarios.filter((comentario) => comentario.id !== comentarioId));
+    } catch (error) {
+      console.error("Error eliminando comentario:", error);
     }
   };
-  
+
   return (
     <div>
       <Navbar />
@@ -164,6 +107,7 @@ const ComentariosPage = () => {
                     rows="1"
                     value={nuevoComentario.mensaje}
                     onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="form-group row">
@@ -176,63 +120,51 @@ const ComentariosPage = () => {
                       className="form-control"
                       value={nuevoComentario.fecha}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                   <div className="col-md-6">
                     <label htmlFor="calificacion">Calificación</label>
-                    <select
+                    <input
+                      type="number"
                       id="calificacion"
                       name="calificacion"
                       className="form-control"
+                      min="1"
+                      max="5"
                       value={nuevoComentario.calificacion}
                       onChange={handleChange}
-                    >
-                      <option value="">Seleccione una calificación</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                    </select>
+                      required
+                    />
                   </div>
                 </div>
                 <div className="form-group row">
                   <div className="col-md-6">
-                    <label htmlFor="idServicio">Servicio</label>
-                    <select
+                    <label htmlFor="idServicio">ID Servicio</label>
+                    <input
+                      type="text"
                       id="idServicio"
                       name="idServicio"
                       className="form-control"
                       value={nuevoComentario.idServicio}
                       onChange={handleChange}
-                    >
-                      <option value="">Seleccione un servicio</option>
-                      {servicios.map((servicio) => (
-                        <option key={servicio.id} value={servicio.nombre}>
-                          {servicio.nombre}
-                        </option>
-                      ))}
-                    </select>
+                      required
+                    />
                   </div>
                   <div className="col-md-6">
-                    <label htmlFor="id_duenio">Dueño</label>
-                    <select
-                      id="id_duenio"
-                      name="id_duenio"
+                    <label htmlFor="idDueno">ID Dueño</label>
+                    <input
+                      type="text"
+                      id="idDueno"
+                      name="idDueno"
                       className="form-control"
-                      value={nuevoComentario.id_duenio}
-                      onChange={handleChange}
-                    >
-                      <option value="">Seleccione un dueño</option>
-                      {duenios.map((duenio) => (
-                        <option key={duenio.id} value={duenio.nombre}>
-                          {duenio.nombre}
-                        </option>
-                      ))}
-                    </select>
+                      value={nuevoComentario.idDueno}  // El valor se maneja desde el estado
+                      onChange={handleChange}  // Asegura que el valor se actualice en el estado
+                      required
+                    />
                   </div>
                 </div>
-                <br />
+                <br/>
                 <button type="submit" className="btn btn-primary">
                   {nuevoComentario.id ? "Actualizar Comentario" : "Guardar Comentario"}
                 </button>
@@ -247,7 +179,7 @@ const ComentariosPage = () => {
             <div key={index} className="col-md-3 mb-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Dueño: {comentario.id_duenio}</h5>
+                  <h5 className="card-title">Dueño: {comentario.idDueno}</h5>
                   {comentario.comentarios && comentario.comentarios.length > 0 ? (
                     comentario.comentarios.map((c, subIndex) => (
                       <div key={subIndex}>

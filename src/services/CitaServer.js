@@ -34,6 +34,16 @@ const getAll = async () => {
   }
 };
 
+const updateEstado = async (id, estado) => {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/${id}`, { estado });
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el estado de la cita:', error);
+    throw error;
+  }
+};
 
 
-export default { create, getAll };
+
+export default { create, getAll, updateEstado };

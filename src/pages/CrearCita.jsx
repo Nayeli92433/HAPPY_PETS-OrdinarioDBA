@@ -9,15 +9,18 @@ import DueñosService from '../services/DuenioService';
 import CitasService from '../services/CitaServer';
 import icono from '../assets/love.png';
 import Swal from "sweetalert2";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const CreateAppointment = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     mascota: { id: '' },
     servicioVeterinaria: { id: '' },
     veterinario: { id: '' },
     fecha: '',
     hora: '',
-    estado: 'Pendiente'
+    estado: 'Pendiente',
+    duenio: { id: '', nombre: '', apellido: '', telefono: '', email: '', direccion: '' } 
   });
 
   const [servicios, setServicios] = useState([]);
@@ -64,6 +67,7 @@ const CreateAppointment = () => {
       const duenios = await DueñosService.getAll();
       const duenioExistente = duenios.find(duenio => `${duenio.nombre} ${duenio.apellido}` === nombreDuenoInput);
 
+      console.log(duenioExistente);
       if (duenioExistente) {
 
         // Establecer nombre completo (nombre + apellido)
@@ -87,12 +91,12 @@ const CreateAppointment = () => {
 
         setModalVisible(false);
         // Establecer el nombre del dueño en el formData
-        setFormData({
-          ...formData,
-          nombreDueno: `${duenioExistente.nombre} ${duenioExistente.apellido}`
-        });
+        setFormData(prevState => ({
+          ...prevState,
+          duenio: duenioExistente 
+        }));
       } else {
-        Swal.fire({ icon: 'error', title: 'No registrado', text: 'Regístrate antes de agendar una cita.' });
+        Swal.fire({ icon: 'error', title: 'Upps no estas registrado', text: 'Regístrate antes de agendar una cita.' });
       }
     } catch {
       Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al verificar al dueño.' });
@@ -102,9 +106,9 @@ const CreateAppointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
     // Verificación de campos vacíos
-    if (!formData.mascotaSeleccionada || !formData.fechaCita || !formData.horaCita || !formData.veterinarioSeleccionado) {
+    if (!formData.mascota || !formData.fecha || !formData.hora || !formData.veterinario || !formData.servicioVeterinaria) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -112,6 +116,7 @@ const CreateAppointment = () => {
       });
       return;
     }
+
 
     // Verificar si el dueño o la mascota no están registrados
     if (!mascotas || mascotas.length === 0) {
@@ -123,21 +128,33 @@ const CreateAppointment = () => {
       return;
     }
 
-    const fechaFormateada = new Date(formData.fechaCita).toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+    const fechaSeleccionada = new Date(formData.fecha);
+    if (isNaN(fechaSeleccionada)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'La fecha seleccionada no es válida.',
+      });
+      return;
+    }
+
+    const fechaFormateada = fechaSeleccionada.toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+
 
     // Buscar los objetos completos correspondientes a los IDs seleccionados
-    const mascotaSeleccionada = mascotas.find(mascota => mascota.id === formData.mascotaSeleccionada);
-    const veterinarioSeleccionado = veterinarios.find(veterinario => veterinario.id === formData.veterinarioSeleccionado);
-    const servicioSeleccionado = servicios.find(servicio => servicio.id === formData.servicioSeleccionado);
+    const mascota = mascotas.find(mascota => Number(mascota.id) === Number(formData.mascota.id));
+    const veterinarioSeleccionado = veterinarios.find(veterinario => Number(veterinario.id) === Number(formData.veterinario.id));
+    const servicioSeleccionado = servicios.find(servicio => Number(servicio.id) === Number(formData.servicioVeterinaria.id));
 
     // Crear el objeto para enviar la cita al backend con los objetos completos
     const citaData = {
-      mascota: mascotaSeleccionada,  // Enviar el objeto completo de la mascota
+      mascota: mascota,  // Enviar el objeto completo de la mascota
       servicioVeterinaria: servicioSeleccionado,  // Enviar el objeto completo del servicio
       veterinario: veterinarioSeleccionado,  // Enviar el objeto completo del veterinario
       fecha: fechaFormateada,  // Fecha de la cita
-      hora: formData.horaCita,  // Hora de la cita
-      estado: "Pendiente",  // Estado de la cita
+      hora: formData.hora,  // Hora de la cita
+      estado: "Pendiente", 
+      duenio: formData.duenio,
     };
 
     console.log("Datos a enviar:", citaData); // Verificar qué datos se están enviando
@@ -150,18 +167,22 @@ const CreateAppointment = () => {
         Swal.fire({
           icon: 'success',
           title: 'Cita creada con éxito',
-          text: `La cita para la mascota ${formData.mascotaSeleccionada} ha sido creada.`,
+          text: `La cita ha sido creada.`,
         });
 
-        // Resetear el formulario después de una cita exitosa
+        // ✅ Reiniciar el formulario y mostrar el modal inicial
         setFormData({
-          nombreDueno: '',
-          mascotaSeleccionada: '',
-          serviciosSeleccionados: '',
-          veterinarioSeleccionado: '',
-          fechaCita: '',
-          horaCita: ''
+          mascota: { id: '' },
+          servicioVeterinaria: { id: '' },
+          veterinario: { id: '' },
+          fecha: '',
+          hora: '',
+          estado: 'Pendiente'
         });
+
+        setNombreDuenoInput('');  // ✅ Vaciar el input del nombre del dueño
+        setMascotas([]);  // ✅ Vaciar la lista de mascotas
+        navigate('/'); 
       } else {
         Swal.fire({
           icon: 'error',
@@ -242,9 +263,8 @@ const CreateAppointment = () => {
                         <label htmlFor="mascotaSeleccionada" className="form-label">Selecciona una mascota</label>
                         <select
                           className="form-control"
-                          id="mascotaSeleccionada"
-                          name="mascotaSeleccionada"
-                          value={formData.mascotaSeleccionada}
+                          name="mascota"
+
                           onChange={handleChange}
                           required>
 
@@ -285,19 +305,17 @@ const CreateAppointment = () => {
                       <div >
                         <div className="form-group mb-3">
                           <label htmlFor="servicioSeleccionado" className="form-label">Selecciona un servicio</label>
-                          <select name="servicioVeterinaria" className="form-control mb-3" value={formData.servicioVeterinaria.id} onChange={handleChange} required>
+                          <select name="servicioVeterinaria" className="form-control mb-3" onChange={handleChange} required>
                             <option value="">Selecciona un servicio</option>
                             {servicios.map(service => <option key={service.id} value={service.id}>{service.nombre}</option>)}
                           </select>
-
-
                         </div>
 
                       </div>
 
                       <div className="form-group mb-3">
                         <label htmlFor="veterinarioSeleccionado" className="form-label">Selecciona un veterinario</label>
-                        <select name="veterinario" className="form-control mb-3" value={formData.veterinario.id} onChange={handleChange} required>
+                        <select name="veterinario" className="form-control mb-3" onChange={handleChange} required>
                           <option value="">Selecciona un veterinario</option>
                           {veterinarios.map(vet => <option key={vet.id} value={vet.id}>{vet.nombre}</option>)}
                         </select>
