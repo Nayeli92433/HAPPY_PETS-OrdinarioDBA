@@ -82,12 +82,12 @@ export default function VeterinariosAdmin() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: "pink" }} >
       <Navbar/>
-      <div className="container mt-5 flex-grow-1" >
+      <div className="container mt-5 flex-grow-1" style={{marginBottom:"80px" }}>
         <CustomTable data={veterinarios} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
         <div className="row justify-content-center">
         <div className="col-md-6">
             <div className="card shadow p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", borderRadius: "20px" }}>
-              <h2 className="text-center mb-4">{editando ? 'Actualizar Veterinario' : 'Registro de Veterinario'}</h2>
+              <h2 className="text-white text-center mb-4">{editando ? 'Actualizar Veterinario' : 'Registro de Veterinario'}</h2>
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   {/* Columna Izquierda */}

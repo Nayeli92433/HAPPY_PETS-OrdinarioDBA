@@ -135,7 +135,7 @@ export default function MascotasAdmin() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: "pink" }}>
       <Navbar />
-      <div className="container mt-5 flex-grow-1">
+      <div className="container mt-5 flex-grow-1" style={{marginBottom:"80px" }}>
         <CustomTable data={mascotas} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
         <div className="row justify-content-center">
           <div className="col-md-8">
