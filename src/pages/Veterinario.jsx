@@ -24,9 +24,39 @@ export default function VeterinariosAdmin() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const validarCampos = () => {
+    const { nombre, apellidos, telefono, especialidad } = formData;
+
+    if (!nombre || !apellidos || !telefono || !especialidad) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return false;
+    }
+    
+    if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+      Swal.fire('Error', 'El nombre solo puede contener letras', 'error');
+      return false;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(apellidos)) {
+      Swal.fire('Error', 'Los apellidos solo pueden contener letras', 'error');
+      return false;
+    }
+
+    if (!/^\d+$/.test(telefono)) {
+      Swal.fire('Error', 'El teléfono solo puede contener números', 'error');
+      return false;
+    }
+
+    return true;
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validarCampos()) return;
+
+
     try {
       if (editando) {
         await apiVeterinarios.update(idEditando, formData);  // Asegúrate de tener la función correspondiente en tu servicio

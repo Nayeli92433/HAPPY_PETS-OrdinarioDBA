@@ -56,6 +56,40 @@ export default function MascotasAdmin() {
     }
   };
 
+  const validarFormulario = () => {
+    const regexTexto = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/; // Solo letras y espacios
+    const regexNumero = /^[0-9]+(\.[0-9]+)?$/; // Números enteros o decimales
+  
+    // Validar que los campos no estén vacíos
+  if (!formData.nombre || !formData.especie || !formData.raza || !formData.edad || !formData.peso || !formData.sexo) {
+    Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+    return false;
+  }
+  
+    if (!regexTexto.test(formData.nombre)) {
+      Swal.fire('Error', 'El nombre solo debe contener letras', 'error');
+      return false;
+    }
+    if (!regexTexto.test(formData.especie)) {
+      Swal.fire('Error', 'La especie solo debe contener letras', 'error');
+      return false;
+    }
+    if (formData.raza !== '' && !regexTexto.test(formData.raza)) {
+      Swal.fire('Error', 'La raza solo debe contener letras', 'error');
+      return false;
+    }
+    if (!regexNumero.test(formData.edad) || parseFloat(formData.edad) < 0) {
+      Swal.fire('Error', 'La edad debe ser un número positivo', 'error');
+      return false;
+    }
+    if (!regexNumero.test(formData.peso) || parseFloat(formData.peso) < 0) {
+      Swal.fire('Error', 'El peso debe ser un número positivo', 'error');
+      return false;
+    }
+  
+    return true;
+  };
+
   // Envía el formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,31 +182,31 @@ export default function MascotasAdmin() {
                     <div className="mb-3">
                       <label className="form-label text-white">Nombre de la Mascota</label>
                       <input
-                        type="text"
+                        
                         className="form-control form-control-lg"
                         name="nombre"
                         value={formData.nombre}
                         onChange={handleChange}
                         style={{ borderRadius: "10px" }}
-                        required
+                        
                       />
                     </div>
                     <div className="mb-3">
                       <label className="form-label text-white">Especie</label>
                       <input
-                        type="text"
+                        
                         className="form-control form-control-lg"
                         name="especie"
                         value={formData.especie}
                         onChange={handleChange}
                         style={{ borderRadius: "10px" }}
-                        required
+                        
                       />
                     </div>
                     <div className="mb-3">
                       <label className="form-label text-white">Raza</label>
                       <input
-                        type="text"
+                        
                         className="form-control form-control-lg"
                         name="raza"
                         value={formData.raza}
@@ -187,25 +221,25 @@ export default function MascotasAdmin() {
                     <div className="mb-3">
                       <label className="form-label text-white">Edad (años)</label>
                       <input
-                        type="number"
+                        
                         className="form-control form-control-lg"
                         name="edad"
                         value={formData.edad}
                         onChange={handleChange}
                         style={{ borderRadius: "10px" }}
-                        required
+                        
                       />
                     </div>
                     <div className="mb-3">
                       <label className="form-label text-white">Peso (kg)</label>
                       <input
-                        type="number"
+                        
                         className="form-control form-control-lg"
                         name="peso"
                         value={formData.peso}
                         onChange={handleChange}
                         style={{ borderRadius: "10px" }}
-                        required
+                      
                       />
                     </div>
                     <div className="mb-3">
@@ -216,7 +250,7 @@ export default function MascotasAdmin() {
                         value={formData.sexo}
                         onChange={handleChange}
                         style={{ borderRadius: "10px" }}
-                        required
+                        
                       >
                         <option value="">Seleccione sexo</option>
                         <option value="Macho">Macho</option>
@@ -233,7 +267,7 @@ export default function MascotasAdmin() {
                     value={formData.duenio.id}
                     onChange={handleChange}
                     style={{ borderRadius: "10px" }}
-                    required
+                    
                   >
                     <option value="">Seleccione un dueño</option>
                     {duenos.map((duenio) => (

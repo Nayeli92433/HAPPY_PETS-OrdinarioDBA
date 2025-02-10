@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { CustomTable } from '../components/Tabla';
 import apiServicios from '../services/ServiciosService';
-import NavAdmin, { Navbar } from '../components/NavAdmin'; // Asegúrate de importar tu plantilla NavAdmin
+import NavAdmin, { Navbar } from '../components/NavAdmin';
 
 export default function ServiciosAdmin() {
   const [formData, setFormData] = useState({ nombre: '', descripcion: '', precio: '' });
@@ -24,8 +24,27 @@ export default function ServiciosAdmin() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validarCampos = () => {
+    const { nombre, descripcion, precio } = formData;
+    if (!nombre || !descripcion || !precio) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return false;
+    }
+     if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+          Swal.fire('Error', 'El nombre solo puede contener letras', 'error');
+          return false;
+        }
+    if (isNaN(precio) || Number(precio) <= 0) {
+      Swal.fire('Error', 'El precio debe ser un número válido mayor que 0', 'error');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validarCampos()) return;
+    
     try {
       if (editando) {
         await apiServicios.update(idEditando, formData);
@@ -49,7 +68,6 @@ export default function ServiciosAdmin() {
   };
 
   const handleDelete = async (id) => {
-    console.log("aqui entra en el metodo de eliminar", id);
     const confirmacion = await Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción no se puede deshacer',
@@ -89,13 +107,13 @@ export default function ServiciosAdmin() {
                 <div className="mb-3">
                   <label className="form-label text-white">Nombre del Servicio</label>
                   <input
-                    type="text"
+                    
                     className="form-control form-control-lg"
                     name="nombre"
                     value={formData.nombre}
                     onChange={handleChange}
                     style={{ borderRadius: "10px" }}
-                    required
+                    
                   />
                 </div>
                 <div className="mb-3">
@@ -106,19 +124,19 @@ export default function ServiciosAdmin() {
                     value={formData.descripcion}
                     onChange={handleChange}
                     style={{ borderRadius: "10px" }}
-                    required
+                    
                   ></textarea>
                 </div>
                 <div className="mb-3">
                   <label className="form-label text-white">Precio ($)</label>
                   <input
-                    type="number"
+                   
                     className="form-control form-control-lg"
                     name="precio"
                     value={formData.precio}
                     onChange={handleChange}
                     style={{ borderRadius: "10px" }}
-                    required
+                    
                   />
                 </div>
                 <button type="submit" className={`btn ${editando ? 'btn-warning' : 'btn-primary'} w-100`}>
