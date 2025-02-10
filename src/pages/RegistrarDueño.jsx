@@ -33,7 +33,22 @@ const DuenioForm = () => {
       });
       return false;
     }
-  
+    if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+      Swal.fire('Error', 'El nombre solo puede contener letras', 'error');
+      return false;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(apellido)) {
+      Swal.fire('Error', 'El nombre solo puede contener letras', 'error');
+      return false;
+    }
+
+    if (!/^\d+$/.test(telefono)) {
+      Swal.fire('Error', 'El teléfono solo puede contener números', 'error');
+      return false;
+    }
+
+
     // Validación de formato de email
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(email)) {
@@ -45,11 +60,11 @@ const DuenioForm = () => {
       });
       return false;
     }
-  
-  
+
+
     return true; // Si todo está bien, devuelve true
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = await validarFormulario(formData); // Llamamos a la validación
