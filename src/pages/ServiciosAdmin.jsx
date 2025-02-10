@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { CustomTable } from '../components/Tabla';
 import apiServicios from '../services/ServiciosService';
-import NavAdmin, { Navbar } from '../components/NavAdmin'; // Asegúrate de importar tu plantilla NavAdmin
+import NavAdmin, { Navbar } from '../components/NavAdmin';
 
 export default function ServiciosAdmin() {
   const [formData, setFormData] = useState({ nombre: '', descripcion: '', precio: '' });
@@ -24,8 +24,23 @@ export default function ServiciosAdmin() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validarCampos = () => {
+    const { nombre, descripcion, precio } = formData;
+    if (!nombre || !descripcion || !precio) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return false;
+    }
+    if (isNaN(precio) || Number(precio) <= 0) {
+      Swal.fire('Error', 'El precio debe ser un número válido mayor que 0', 'error');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validarCampos()) return;
+    
     try {
       if (editando) {
         await apiServicios.update(idEditando, formData);
@@ -49,7 +64,6 @@ export default function ServiciosAdmin() {
   };
 
   const handleDelete = async (id) => {
-    console.log("aqui entra en el metodo de eliminar", id);
     const confirmacion = await Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción no se puede deshacer',
@@ -78,7 +92,7 @@ export default function ServiciosAdmin() {
 
   return (
     <div style={{ background: '#fef9f9', minHeight: '100vh' }}>
-      <Navbar /> {/* Aquí insertas tu plantilla NavAdmin */}
+      <Navbar />
       <div className="container mt-5">
         <CustomTable data={servicios} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
         <div className="row justify-content-center">
@@ -88,15 +102,15 @@ export default function ServiciosAdmin() {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Nombre del Servicio</label>
-                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange}/>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Descripción</label>
-                  <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange} required></textarea>
+                  <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange}></textarea>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Precio ($)</label>
-                  <input type="number" className="form-control" name="precio" value={formData.precio} onChange={handleChange} required />
+                  <input type="text" className="form-control" name="precio" value={formData.precio} onChange={handleChange}/>
                 </div>
                 <button type="submit" className={`btn ${editando ? 'btn-warning' : 'btn-primary'} w-100`}>
                   {editando ? 'Actualizar Servicio' : 'Registrar Servicio'}

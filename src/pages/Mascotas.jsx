@@ -56,9 +56,46 @@ export default function MascotasAdmin() {
     }
   };
 
+  const validarFormulario = () => {
+    const regexTexto = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/; // Solo letras y espacios
+    const regexNumero = /^[0-9]+(\.[0-9]+)?$/; // Números enteros o decimales
+  
+    // Validar que los campos no estén vacíos
+  if (!formData.nombre || !formData.especie || !formData.raza || !formData.edad || !formData.peso || !formData.sexo) {
+    Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+    return false;
+  }
+  
+    if (!regexTexto.test(formData.nombre)) {
+      Swal.fire('Error', 'El nombre solo debe contener letras', 'error');
+      return false;
+    }
+    if (!regexTexto.test(formData.especie)) {
+      Swal.fire('Error', 'La especie solo debe contener letras', 'error');
+      return false;
+    }
+    if (formData.raza !== '' && !regexTexto.test(formData.raza)) {
+      Swal.fire('Error', 'La raza solo debe contener letras', 'error');
+      return false;
+    }
+    if (!regexNumero.test(formData.edad) || parseFloat(formData.edad) < 0) {
+      Swal.fire('Error', 'La edad debe ser un número positivo', 'error');
+      return false;
+    }
+    if (!regexNumero.test(formData.peso) || parseFloat(formData.peso) < 0) {
+      Swal.fire('Error', 'El peso debe ser un número positivo', 'error');
+      return false;
+    }
+  
+    return true;
+  };
+
   // Envía el formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validarFormulario()) return; // Si la validación falla, no envía el formulario
+
     console.log("Datos a enviar", formData); // Verificar en consola el JSON a enviar
 
     try {
@@ -152,7 +189,6 @@ export default function MascotasAdmin() {
                     name="nombre"
                     value={formData.nombre}
                     onChange={handleChange}
-                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -163,7 +199,6 @@ export default function MascotasAdmin() {
                     name="especie"
                     value={formData.especie}
                     onChange={handleChange}
-                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -184,7 +219,6 @@ export default function MascotasAdmin() {
                     name="edad"
                     value={formData.edad}
                     onChange={handleChange}
-                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -195,7 +229,6 @@ export default function MascotasAdmin() {
                     name="peso"
                     value={formData.peso}
                     onChange={handleChange}
-                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -205,7 +238,6 @@ export default function MascotasAdmin() {
                     name="sexo"
                     value={formData.sexo}
                     onChange={handleChange}
-                    required
                   >
                     <option value="">Seleccione sexo</option>
                     <option value="Macho">Macho</option>
@@ -219,7 +251,6 @@ export default function MascotasAdmin() {
                     name="duenio"
                     value={formData.duenio.id}
                     onChange={handleChange}
-                    required
                   >
                     <option value="">Seleccione un dueño</option>
                     {duenos.map((duenio) => (

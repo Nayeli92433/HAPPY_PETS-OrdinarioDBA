@@ -23,9 +23,39 @@ export default function VeterinariosAdmin() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const validarCampos = () => {
+    const { nombre, apellidos, telefono, especialidad } = formData;
+
+    if (!nombre || !apellidos || !telefono || !especialidad) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return false;
+    }
+    
+    if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+      Swal.fire('Error', 'El nombre solo puede contener letras', 'error');
+      return false;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(apellidos)) {
+      Swal.fire('Error', 'Los apellidos solo pueden contener letras', 'error');
+      return false;
+    }
+
+    if (!/^\d+$/.test(telefono)) {
+      Swal.fire('Error', 'El teléfono solo puede contener números', 'error');
+      return false;
+    }
+
+    return true;
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validarCampos()) return;
+
+
     try {
       if (editando) {
         await apiVeterinarios.update(idEditando, formData);  // Asegúrate de tener la función correspondiente en tu servicio
@@ -90,19 +120,19 @@ export default function VeterinariosAdmin() {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Nombre</label>
-                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Apellidos</label>
-                  <input type="text" className="form-control" name="apellidos" value={formData.apellidos} onChange={handleChange} required />
+                  <input type="text" className="form-control" name="apellidos" value={formData.apellidos} onChange={handleChange} />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Teléfono</label>
-                  <input type="text" className="form-control" name="telefono" value={formData.telefono} onChange={handleChange} required />
+                  <input type="text" className="form-control" name="telefono" value={formData.telefono} onChange={handleChange}/>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Email</label>
-                  <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
+                  <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Especialidad</label>
