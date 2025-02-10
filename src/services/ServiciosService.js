@@ -39,6 +39,7 @@ const update = async (id,servicio) => {
 }
 
 const deleteservicio = async (id) => {
+  console.log("id del servicio",id);
   try {
   await axiosInstance.delete(`${API_URL}/${id}`)
       

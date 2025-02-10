@@ -27,8 +27,9 @@ export const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link" href="/servicios">Servicios</a>
             </li>
+          
             <li className="nav-item">
-              <a className="nav-link" href="/registrar-dueño">Nuestro personal</a>
+              <a className="nav-link" href="/comentarios">Comentarios y opiniones</a>
             </li>
             <li className="nav-item ms-5">
             <button

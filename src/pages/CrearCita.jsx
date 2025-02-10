@@ -8,56 +8,41 @@ import MascotasService from '../services/MascotasService';
 import DueñosService from '../services/DuenioService';
 import CitasService from '../services/CitaServer';
 import icono from '../assets/love.png';
-import API_BASE_URL from '../config/config';
-import { data } from 'react-router-dom';
 import Swal from "sweetalert2";
 
 const CreateAppointment = () => {
   const [formData, setFormData] = useState({
-    nombreDueno: '',
-    mascotaSeleccionada: '',
-    serviciosSeleccionados: '',
-    veterinarioSeleccionado: '',
-    fechaCita: '',  // Establecer valor inicial como cadena vacía
-    horaCita: ''
+    mascota: { id: '' },
+    servicioVeterinaria: { id: '' },
+    veterinario: { id: '' },
+    fecha: '',
+    hora: '',
+    estado: 'Pendiente'
   });
 
-
-  const [servicios, setServicios] = useState([]); // Lista de servicios
-  const [veterinarios, setVeterinarios] = useState([]); // Lista de veterinarios
-  const [mascotas, setMascotas] = useState([]); // Lista de mascotas del dueño
+  const [servicios, setServicios] = useState([]);
+  const [veterinarios, setVeterinarios] = useState([]);
+  const [mascotas, setMascotas] = useState([]);
   const [modalVisible, setModalVisible] = useState(true);
   const [nombreDuenoInput, setNombreDuenoInput] = useState('');
   const [mensajeError, setMensajeError] = useState('');
 
-  // Obtener servicios desde el backend
   useEffect(() => {
-    const cargarServicios = async () => {
-      const data = await ServiciosService.getAll();
-      setServicios(data);
-    };
+    const cargarServicios = async () => setServicios(await ServiciosService.getAll());
+    const cargarVeterinarios = async () => setVeterinarios(await VeterinariosService.getAll());
     cargarServicios();
-  }, []);
-
-  // Obtener veterinarios desde el backend
-  useEffect(() => {
-    const cargarVeterinarios = async () => {
-      const data = await VeterinariosService.getAll();
-      setVeterinarios(data);
-    };
     cargarVeterinarios();
   }, []);
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-      // Se actualiza el estado con el ID de la mascota seleccionada
-    });
+    if (['mascota', 'servicioVeterinaria', 'veterinario'].includes(name)) {
+      setFormData({ ...formData, [name]: { id: value } });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
-
-  console.log(formData)
 
   const handleNombreDuenoInputChange = (e) => {
     const value = e.target.value;
@@ -74,12 +59,10 @@ const CreateAppointment = () => {
   };
 
 
-  // Verificar si el dueño está registrado
   const verificarDuenoExistente = async () => {
     try {
       const duenios = await DueñosService.getAll();
-      const duenioExistente = duenios.find(duenio => `${duenio.nombre} ${duenio.apellido}` === nombreDuenoInput); // Comparar nombre completo
-
+      const duenioExistente = duenios.find(duenio => `${duenio.nombre} ${duenio.apellido}` === nombreDuenoInput);
 
       if (duenioExistente) {
 
@@ -103,19 +86,16 @@ const CreateAppointment = () => {
         }
 
         setModalVisible(false);
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Upps no estas registrado',
-          text: 'Por favor, registrate para poder agendar una cita.',
+        // Establecer el nombre del dueño en el formData
+        setFormData({
+          ...formData,
+          nombreDueno: `${duenioExistente.nombre} ${duenioExistente.apellido}`
         });
+      } else {
+        Swal.fire({ icon: 'error', title: 'No registrado', text: 'Regístrate antes de agendar una cita.' });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Hubo un problema al verificar al dueño.',
-      });
+    } catch {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al verificar al dueño.' });
     }
   };
 
@@ -250,11 +230,12 @@ const CreateAppointment = () => {
                           className="form-control"
                           id="nombreDueno"
                           name="nombreDueno"
-                          value={formData.nombreDueno}  // Aquí ya muestra el nombre completo
+                          value={formData.nombreDueno || ''}  // Mostrar el nombre del dueño aquí
                           onChange={handleChange}
                           readOnly
                           required
                         />
+
                       </div>
 
                       <div className="form-group mb-3">
@@ -283,15 +264,7 @@ const CreateAppointment = () => {
                       {/* Fecha de la cita */}
                       <div className="form-group mb-3">
                         <label htmlFor="fechaCita" className="form-label">Fecha de la cita</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          id="fechaCita"
-                          name="fechaCita"
-                          value={formData.fechaCita}
-                          onChange={handleChange}
-                          required
-                        />
+                        <input type="date" name="fecha" className="form-control mb-3" value={formData.fecha} onChange={handleChange} required />
                       </div>
 
                     </div>
@@ -301,19 +274,10 @@ const CreateAppointment = () => {
                       {/* Hora de la cita */}
                       <div className="form-group mb-3">
                         <label htmlFor="horaCita" className="form-label">Hora de la cita</label>
-                        <select
-                          className="form-control"
-                          id="horaCita"
-                          name="horaCita"
-                          value={formData.horaCita}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Seleccione una hora</option>
-                          {generarHoras().map((hora, index) => (
-                            <option key={index} value={hora}>
-                              {hora}
-                            </option>
+                        <select name="hora" className="form-control mb-3" value={formData.hora} onChange={handleChange} required>
+                          <option value="">Selecciona una hora</option>
+                          {Array.from({ length: 12 }, (_, i) => i + 9).map(hora => (
+                            <option key={hora} value={`${hora}:00`}>{hora}:00</option>
                           ))}
                         </select>
                       </div>
@@ -321,20 +285,9 @@ const CreateAppointment = () => {
                       <div >
                         <div className="form-group mb-3">
                           <label htmlFor="servicioSeleccionado" className="form-label">Selecciona un servicio</label>
-                          <select
-                            className="form-control"
-                            id="servicioSeleccionado"
-                            name="servicioSeleccionado"  // El nombre debe coincidir con el nombre en el formData
-                            value={formData.servicioSeleccionado}
-                            onChange={handleChange}  // Aquí se maneja el cambio
-                            required
-                          >
-                            <option value="">Seleccione un servicio</option>
-                            {servicios.map(service => (
-                              <option key={service.id} value={service.id}>
-                                {service.nombre}
-                              </option>
-                            ))}
+                          <select name="servicioVeterinaria" className="form-control mb-3" value={formData.servicioVeterinaria.id} onChange={handleChange} required>
+                            <option value="">Selecciona un servicio</option>
+                            {servicios.map(service => <option key={service.id} value={service.id}>{service.nombre}</option>)}
                           </select>
 
 
@@ -344,20 +297,9 @@ const CreateAppointment = () => {
 
                       <div className="form-group mb-3">
                         <label htmlFor="veterinarioSeleccionado" className="form-label">Selecciona un veterinario</label>
-                        <select
-                          className="form-control"
-                          id="veterinarioSeleccionado"
-                          name="veterinarioSeleccionado"
-                          value={formData.veterinarioSeleccionado}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Seleccione un veterinario</option>
-                          {veterinarios.map(vet => (
-                            <option key={vet.id} value={vet.id}>
-                              {vet.nombre}
-                            </option>
-                          ))}
+                        <select name="veterinario" className="form-control mb-3" value={formData.veterinario.id} onChange={handleChange} required>
+                          <option value="">Selecciona un veterinario</option>
+                          {veterinarios.map(vet => <option key={vet.id} value={vet.id}>{vet.nombre}</option>)}
                         </select>
                       </div>
 

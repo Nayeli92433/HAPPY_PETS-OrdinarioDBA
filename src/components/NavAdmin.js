@@ -11,16 +11,19 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link active" href="/">Home</a>
+              <a className="nav-link active" href="/admin">Home Admin</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/servicios">Veterinarios</a>
+              <a className="nav-link" href="/citasVer">Citas</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/registrar-dueño">Servicios</a>
+              <a className="nav-link" href="/veterinarios">Veterinarios</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/registrar-dueño">Mascotas</a>
+              <a className="nav-link" href="/adminServicios">Servicios</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/mascotas">Mascotas</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/">Cerrar sesión</a>

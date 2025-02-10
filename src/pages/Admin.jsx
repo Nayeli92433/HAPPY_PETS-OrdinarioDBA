@@ -5,6 +5,7 @@ import servicioService from '../services/ServiciosService';
 import mascotaService from '../services/MascotasService';  
 import '../components/NavAdmin'
 import { Navbar } from '../components/NavAdmin';
+import { Footer } from '../components/Footer';
 
 const Admin = () => {
   const [dueños, setDueños] = useState([]);
@@ -20,7 +21,7 @@ const Admin = () => {
         const [dueñosData, mascotasData, serviciosData, veterinariosData] = await Promise.all([
           duenioService.getAll(),
           mascotaService.getAll(),
-          servicioService.obtenerServicios(),
+          servicioService.getAll(),
           veterinarioService.getAll(),
         ]);
 
@@ -54,89 +55,92 @@ const Admin = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#fef9f9', padding: '20px', minHeight: '100vh' }}>
+    <div>
       <Navbar></Navbar>
-      <h1 className="text-center font-bold" style={{ color: '#FF9F9F',}}>Área de Administración</h1>
+      <div style={{ backgroundColor: '#fef9f9', padding: '20px', minHeight: '100vh'}}>
+        <h1 className="text-center font-bold" style={{ color: '#FF9F9F',}}>Área de Administración</h1>
 
-      {/* Mostrar error si hay */}
-      {error && <div className="alert alert-danger">{error}</div>}
+        {/* Mostrar error si hay */}
+        {error && <div className="alert alert-danger">{error}</div>}
 
-      <div className="row mt-4 ">
-        {/* Tabla de Dueños */}
-        <div className="col-md-4 ">
-          <h2 className="text-center">Dueños</h2>
-          <table className="table table-striped border">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Mascotas</th> 
-              </tr>
-            </thead>
-            <tbody>
-              {dueños.map((duenio) => (
-                <tr key={duenio.id}>
-                  <td>{duenio.nombre}</td>
-                  <td>{duenio.apellido}</td>
-                  <td>{duenio.telefono}</td>
-                  <td>
-                    {obtenerMascotasDeDueño(duenio.id).length > 0
-                      ? obtenerMascotasDeDueño(duenio.id).map((mascota, index) => (
-                          <div key={index}>{mascota.nombre}</div>  // Muestra el nombre de la mascota
-                        ))
-                      : 'No tiene mascotas'}
-                  </td>
+        <div className="row mt-4 ">
+          {/* Tabla de Dueños */}
+          <div className="col-md-4 ">
+            <h2 className="text-center">Dueños</h2>
+            <table className="table table-striped border">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Teléfono</th>
+                  <th scope="col">Mascotas</th> 
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {dueños.map((duenio) => (
+                  <tr key={duenio.id}>
+                    <td>{duenio.nombre}</td>
+                    <td>{duenio.apellido}</td>
+                    <td>{duenio.telefono}</td>
+                    <td>
+                      {obtenerMascotasDeDueño(duenio.id).length > 0
+                        ? obtenerMascotasDeDueño(duenio.id).map((mascota, index) => (
+                            <div key={index}>{mascota.nombre}</div>  // Muestra el nombre de la mascota
+                          ))
+                        : 'No tiene mascotas'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        {/* Tabla de Servicios */}
-        <div className="col-md-4">
-          <h2 className="text-center">Servicios</h2>
-          <table className="table table-striped border">
-            <thead>
-              <tr>
-                <th scope="col">Nombre del Servicio</th>
-                <th scope="col">Precio</th>
-              </tr>
-            </thead>
-            <tbody>
-              {servicios.map((servicio) => (
-                <tr key={servicio.id}>
-                  <td>{servicio.nombre}</td>
-                  <td>{servicio.precio}</td>
+          {/* Tabla de Servicios */}
+          <div className="col-md-4">
+            <h2 className="text-center">Servicios</h2>
+            <table className="table table-striped border">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre del Servicio</th>
+                  <th scope="col">Precio</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {servicios.map((servicio) => (
+                  <tr key={servicio.id}>
+                    <td>{servicio.nombre}</td>
+                    <td>{servicio.precio}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        {/* Tabla de Veterinarios */}
-        <div className="col-md-4">
-          <h2 className="text-center">Veterinarios</h2>
-          <table className="table table-striped border">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Especialidad</th>
-                <th scope="col">Teléfono</th>
-              </tr>
-            </thead>
-            <tbody>
-              {veterinarios.map((veterinario) => (
-                <tr key={veterinario.id}>
-                  <td>{veterinario.nombre}</td>
-                  <td>{veterinario.especialidad}</td>
-                  <td>{veterinario.telefono}</td>
+          {/* Tabla de Veterinarios */}
+          <div className="col-md-4">
+            <h2 className="text-center">Veterinarios</h2>
+            <table className="table table-striped border">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Especialidad</th>
+                  <th scope="col">Teléfono</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {veterinarios.map((veterinario) => (
+                  <tr key={veterinario.id}>
+                    <td>{veterinario.nombre}</td>
+                    <td>{veterinario.especialidad}</td>
+                    <td>{veterinario.telefono}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };
