@@ -61,6 +61,10 @@ const CreateAppointment = () => {
     }
   };
 
+  const handleCancel = () => {
+    // Al hacer clic en "Cancelar", redirigimos al usuario al home
+    navigate('/');
+  };
 
   const verificarDuenoExistente = async () => {
     try {
@@ -231,7 +235,11 @@ const CreateAppointment = () => {
                 placeholder="Nombre completo"
               />
               {mensajeError && <p className="text-danger">{mensajeError}</p>}
-              <button className="btn btn-primary" onClick={verificarDuenoExistente}>Aceptar</button>
+              <div className="d-flex justify-content-center">
+                <button className="btn btn-primary me-2" onClick={verificarDuenoExistente}>Aceptar</button>
+                {/* Botón de Cancelar con color rojo y al lado del botón Aceptar */}
+                <button className="btn btn-danger" onClick={handleCancel}>Cancelar</button>
+              </div>
             </div>
           </div>
         )}
