@@ -56,7 +56,7 @@ const DuenioForm = () => {
     <div>
       <Navbar />
       <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: "pink" }}>
-        <div className="card p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", width: "400px" }}>
+        <div className="card p-4 shadow-lg" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", width: "800px", borderRadius: "20px" }}>
           <img
             src={perfilImg}
             alt="Perfil"
@@ -65,27 +65,78 @@ const DuenioForm = () => {
           />
           <h3 className="text-white text-center">Registrar Dueño</h3>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label text-white">Nombre</label>
-              <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+            <div className="row">
+              {/* Columna Izquierda */}
+              <div className="col-md-6 pe-3">
+                <div className="mb-4">
+                  <label className="text-white form-label text-secondary">Nombre</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    name="nombre"
+                    style={{ borderRadius: "10px" }}
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-white form-label text-secondary">Teléfono</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    name="telefono"
+                    style={{ borderRadius: "10px" }}
+                    value={formData.telefono}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Columna Derecha */}
+              <div className="col-md-6 ps-3">
+                <div className="mb-4">
+                  <label className="text-white form-label text-secondary">Apellido</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    name="apellido"
+                    style={{ borderRadius: "10px" }}
+                    value={formData.apellido}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="text-white form-label text-secondary">Email</label>
+                  <input
+                    type="email"
+                    className="form-control form-control-lg"
+                    name="email"
+                    style={{ borderRadius: "10px" }}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="mb-3">
-              <label className="form-label text-white">Apellido</label>
-              <input type="text" className="form-control" name="apellido" value={formData.apellido} onChange={handleChange} required />
+            {/* Campo full-width */}
+            <div className="mb-4">
+              <label className="text-white form-label text-secondary">Dirección</label>
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                name="direccion"
+                style={{ borderRadius: "10px" }}
+                value={formData.direccion}
+                onChange={handleChange}
+              />
             </div>
-            <div className="mb-3">
-              <label className="form-label text-white">Teléfono</label>
-              <input type="text" className="form-control" name="telefono" value={formData.telefono} onChange={handleChange} required />
-            </div>
-            <div className="mb-3">
-              <label className="form-label text-white">Email</label>
-              <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
-            </div>
-            <div className="mb-3">
-              <label className="form-label text-white">Dirección</label>
-              <input type="text" className="form-control" name="direccion" value={formData.direccion} onChange={handleChange} />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">Registrar</button>
+            <button type="submit" className="btn btn-primary btn-sm mx-auto d-block">Registrar</button>
           </form>
         </div>
       </div>

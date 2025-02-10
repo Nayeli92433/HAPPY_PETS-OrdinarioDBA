@@ -77,26 +77,49 @@ export default function ServiciosAdmin() {
   ];
 
   return (
-    <div style={{ background: '#fef9f9', minHeight: '100vh' }}>
-      <Navbar /> {/* Aquí insertas tu plantilla NavAdmin */}
-      <div className="container mt-5">
+    <div style={{ minHeight: '100vh', backgroundColor: "pink" }}>
+      <Navbar />
+      <div className="container mt-5 flex-grow-1">
         <CustomTable data={servicios} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mb-5">
           <div className="col-md-6">
-            <div className="card shadow p-4">
+            <div className="card shadow p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", borderRadius: "20px" }}>
               <h2 className="text-center mb-4">{editando ? 'Actualizar Servicio' : 'Registro de Servicio'}</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">Nombre del Servicio</label>
-                  <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                  <label className="form-label text-white">Nombre del Servicio</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    style={{ borderRadius: "10px" }}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Descripción</label>
-                  <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange} required></textarea>
+                  <label className="form-label text-white">Descripción</label>
+                  <textarea
+                    className="form-control form-control-lg"
+                    name="descripcion"
+                    value={formData.descripcion}
+                    onChange={handleChange}
+                    style={{ borderRadius: "10px" }}
+                    required
+                  ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Precio ($)</label>
-                  <input type="number" className="form-control" name="precio" value={formData.precio} onChange={handleChange} required />
+                  <label className="form-label text-white">Precio ($)</label>
+                  <input
+                    type="number"
+                    className="form-control form-control-lg"
+                    name="precio"
+                    value={formData.precio}
+                    onChange={handleChange}
+                    style={{ borderRadius: "10px" }}
+                    required
+                  />
                 </div>
                 <button type="submit" className={`btn ${editando ? 'btn-warning' : 'btn-primary'} w-100`}>
                   {editando ? 'Actualizar Servicio' : 'Registrar Servicio'}
@@ -107,5 +130,5 @@ export default function ServiciosAdmin() {
         </div>
       </div>
     </div>
-  );
+);
 }

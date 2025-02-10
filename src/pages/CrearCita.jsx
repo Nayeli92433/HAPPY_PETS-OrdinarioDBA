@@ -64,6 +64,7 @@ const CreateAppointment = () => {
       const duenios = await DueñosService.getAll();
       const duenioExistente = duenios.find(duenio => `${duenio.nombre} ${duenio.apellido}` === nombreDuenoInput);
 
+      console.log(duenioExistente);
       if (duenioExistente) {
 
         // Establecer nombre completo (nombre + apellido)
@@ -92,7 +93,7 @@ const CreateAppointment = () => {
           nombreDueno: `${duenioExistente.nombre} ${duenioExistente.apellido}`
         });
       } else {
-        Swal.fire({ icon: 'error', title: 'No registrado', text: 'Regístrate antes de agendar una cita.' });
+        Swal.fire({ icon: 'error', title: 'Upps no estas registrado', text: 'Regístrate antes de agendar una cita.' });
       }
     } catch {
       Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al verificar al dueño.' });
@@ -102,9 +103,9 @@ const CreateAppointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  console.log(formData);
     // Verificación de campos vacíos
-    if (!formData.mascotaSeleccionada || !formData.fechaCita || !formData.horaCita || !formData.veterinarioSeleccionado) {
+    if (!formData.mascota || !formData.fecha || !formData.hora || !formData.veterinario || !formData.servicioVeterinaria) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -112,6 +113,7 @@ const CreateAppointment = () => {
       });
       return;
     }
+  
 
     // Verificar si el dueño o la mascota no están registrados
     if (!mascotas || mascotas.length === 0) {
@@ -123,20 +125,31 @@ const CreateAppointment = () => {
       return;
     }
 
-    const fechaFormateada = new Date(formData.fechaCita).toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+    const fechaSeleccionada = new Date(formData.fecha);
+  if (isNaN(fechaSeleccionada)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La fecha seleccionada no es válida.',
+    });
+    return;
+  }
+
+  const fechaFormateada = fechaSeleccionada.toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+
 
     // Buscar los objetos completos correspondientes a los IDs seleccionados
-    const mascotaSeleccionada = mascotas.find(mascota => mascota.id === formData.mascotaSeleccionada);
-    const veterinarioSeleccionado = veterinarios.find(veterinario => veterinario.id === formData.veterinarioSeleccionado);
-    const servicioSeleccionado = servicios.find(servicio => servicio.id === formData.servicioSeleccionado);
-
+    const mascota = mascotas.find(mascota => Number(mascota.id) === Number(formData.mascota.id));
+    const veterinarioSeleccionado = veterinarios.find(veterinario => Number(veterinario.id) === Number(formData.veterinario.id));
+    const servicioSeleccionado = servicios.find(servicio => Number(servicio.id) === Number(formData.servicioVeterinaria.id));
+   
     // Crear el objeto para enviar la cita al backend con los objetos completos
     const citaData = {
-      mascota: mascotaSeleccionada,  // Enviar el objeto completo de la mascota
+      mascota: mascota,  // Enviar el objeto completo de la mascota
       servicioVeterinaria: servicioSeleccionado,  // Enviar el objeto completo del servicio
       veterinario: veterinarioSeleccionado,  // Enviar el objeto completo del veterinario
       fecha: fechaFormateada,  // Fecha de la cita
-      hora: formData.horaCita,  // Hora de la cita
+      hora: formData.hora,  // Hora de la cita
       estado: "Pendiente",  // Estado de la cita
     };
 
@@ -242,9 +255,8 @@ const CreateAppointment = () => {
                         <label htmlFor="mascotaSeleccionada" className="form-label">Selecciona una mascota</label>
                         <select
                           className="form-control"
-                          id="mascotaSeleccionada"
-                          name="mascotaSeleccionada"
-                          value={formData.mascotaSeleccionada}
+                          name="mascota"
+                          value={formData.mascota.id}
                           onChange={handleChange}
                           required>
 
