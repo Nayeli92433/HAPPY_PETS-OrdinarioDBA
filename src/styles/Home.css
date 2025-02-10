@@ -41,7 +41,8 @@
   background-color: rgba(122, 53, 53, 0.486); 
   color: white;
   padding: 30px;
-  border-radius: 10px; 
+  border-radius: 0px; 
+  
 }
 
 .custom-card-Home {
@@ -53,6 +54,7 @@
   flex-direction: column;
   justify-content: space-between; 
   height: 100%; 
+  
 }
 
 .custom-card:hover {
@@ -62,7 +64,8 @@
 
 .custom-card .card-body {
   padding: 20px; 
-  background-color:  rgb(210, 255, 246);
+  background-color:  rgb(228, 240, 253);
+  
 }
 
 .custom-card .card-title {

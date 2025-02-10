@@ -80,6 +80,7 @@ const CreateAppointment = () => {
       const duenios = await DueñosService.getAll();
       const duenioExistente = duenios.find(duenio => `${duenio.nombre} ${duenio.apellido}` === nombreDuenoInput); // Comparar nombre completo
 
+
       if (duenioExistente) {
 
         // Establecer nombre completo (nombre + apellido)
@@ -91,6 +92,15 @@ const CreateAppointment = () => {
         // Obtener las mascotas del dueño mediante el nuevo servicio
         const mascotasDelDuenio = await MascotasService.getByDuenoId(duenioExistente.id);
         setMascotas(mascotasDelDuenio); // Actualizamos el estado con las mascotas del dueño
+        // Verificar si el dueño tiene mascotas
+        if (mascotasDelDuenio.length === 0) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Upps no tienes mascotas registradas',
+            text: 'Registra a tus mascotas antes de crear una cita.',
+          });
+          return; // Detener el proceso si no hay mascotas
+        }
 
         setModalVisible(false);
       } else {
@@ -111,86 +121,86 @@ const CreateAppointment = () => {
 
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Verificación de campos vacíos
-  if (!formData.mascotaSeleccionada || !formData.fechaCita || !formData.horaCita || !formData.veterinarioSeleccionado) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Por favor, completa todos los campos.',
-    });
-    return;
-  }
-
-  // Verificar si el dueño o la mascota no están registrados
-  if (!mascotas || mascotas.length === 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'No hay mascotas registradas',
-      text: 'Por favor, registra una mascota para poder agendar la cita.',
-    });
-    return;
-  }
-
-  const fechaFormateada = new Date(formData.fechaCita).toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
-
-  // Buscar los objetos completos correspondientes a los IDs seleccionados
-  const mascotaSeleccionada = mascotas.find(mascota => mascota.id === formData.mascotaSeleccionada);
-  const veterinarioSeleccionado = veterinarios.find(veterinario => veterinario.id === formData.veterinarioSeleccionado);
-  const servicioSeleccionado = servicios.find(servicio => servicio.id === formData.servicioSeleccionado);
-
-  // Crear el objeto para enviar la cita al backend con los objetos completos
-  const citaData = {
-    mascota: mascotaSeleccionada,  // Enviar el objeto completo de la mascota
-    servicioVeterinaria: servicioSeleccionado,  // Enviar el objeto completo del servicio
-    veterinario: veterinarioSeleccionado,  // Enviar el objeto completo del veterinario
-    fecha: fechaFormateada,  // Fecha de la cita
-    hora: formData.horaCita,  // Hora de la cita
-    estado: "Pendiente",  // Estado de la cita
-  };
-
-  console.log("Datos a enviar:", citaData); // Verificar qué datos se están enviando
-
-  try {
-    // Enviar la cita al backend (usando el servicio correspondiente para crear la cita)
-    const response = await CitasService.create(citaData);
-
-    if (response.status === 201 || response.status === 200) {
+    // Verificación de campos vacíos
+    if (!formData.mascotaSeleccionada || !formData.fechaCita || !formData.horaCita || !formData.veterinarioSeleccionado) {
       Swal.fire({
-        icon: 'success',
-        title: 'Cita creada con éxito',
-        text: `La cita para la mascota ${formData.mascotaSeleccionada} ha sido creada.`,
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, completa todos los campos.',
       });
+      return;
+    }
 
-      // Resetear el formulario después de una cita exitosa
-      setFormData({
-        nombreDueno: '',
-        mascotaSeleccionada: '',
-        serviciosSeleccionados: '',
-        veterinarioSeleccionado: '',
-        fechaCita: '',
-        horaCita: ''
+    // Verificar si el dueño o la mascota no están registrados
+    if (!mascotas || mascotas.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No hay mascotas registradas',
+        text: 'Por favor, registra una mascota para poder agendar la cita.',
       });
-    } else {
+      return;
+    }
+
+    const fechaFormateada = new Date(formData.fechaCita).toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+
+    // Buscar los objetos completos correspondientes a los IDs seleccionados
+    const mascotaSeleccionada = mascotas.find(mascota => mascota.id === formData.mascotaSeleccionada);
+    const veterinarioSeleccionado = veterinarios.find(veterinario => veterinario.id === formData.veterinarioSeleccionado);
+    const servicioSeleccionado = servicios.find(servicio => servicio.id === formData.servicioSeleccionado);
+
+    // Crear el objeto para enviar la cita al backend con los objetos completos
+    const citaData = {
+      mascota: mascotaSeleccionada,  // Enviar el objeto completo de la mascota
+      servicioVeterinaria: servicioSeleccionado,  // Enviar el objeto completo del servicio
+      veterinario: veterinarioSeleccionado,  // Enviar el objeto completo del veterinario
+      fecha: fechaFormateada,  // Fecha de la cita
+      hora: formData.horaCita,  // Hora de la cita
+      estado: "Pendiente",  // Estado de la cita
+    };
+
+    console.log("Datos a enviar:", citaData); // Verificar qué datos se están enviando
+
+    try {
+      // Enviar la cita al backend (usando el servicio correspondiente para crear la cita)
+      const response = await CitasService.create(citaData);
+
+      if (response.status === 201 || response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Cita creada con éxito',
+          text: `La cita para la mascota ${formData.mascotaSeleccionada} ha sido creada.`,
+        });
+
+        // Resetear el formulario después de una cita exitosa
+        setFormData({
+          nombreDueno: '',
+          mascotaSeleccionada: '',
+          serviciosSeleccionados: '',
+          veterinarioSeleccionado: '',
+          fechaCita: '',
+          horaCita: ''
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al crear la cita.',
+        });
+      }
+    } catch (error) {
+      console.error("Error al crear la cita: ", error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'Hubo un problema al crear la cita.',
       });
     }
-  } catch (error) {
-    console.error("Error al crear la cita: ", error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Hubo un problema al crear la cita.',
-    });
-  }
-};
+  };
 
-  
-  
+
+
   const generarHoras = () => {
     const horas = [];
     let hora = 9;  // Comienza a las 9:00 AM
@@ -208,7 +218,7 @@ const CreateAppointment = () => {
       <div className="appointment-page">
         {modalVisible && (
           <div className="modal d-flex justify-content-center align-items-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-            <div className="modal-content bg-light p-5 rounded text-center shadow">
+            <div className="modal-contentB bg-light p-5 rounded text-center shadow">
               <img src={icono} alt="No hay servicios" className="iconoModal mb-3" style={{ maxWidth: '100px' }} />
               <h2>Bienvenido</h2>
               <p>Por favor, ingresa tu nombre completo:</p>
@@ -256,7 +266,7 @@ const CreateAppointment = () => {
                           value={formData.mascotaSeleccionada}
                           onChange={handleChange}
                           required>
-                            
+
                           <option value="">Seleccione una mascota</option>
                           {mascotas.length === 0 ? (
                             <option value="" disabled>No hay mascotas registradas para este dueño</option>
