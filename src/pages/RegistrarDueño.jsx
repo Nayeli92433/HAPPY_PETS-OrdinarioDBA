@@ -21,8 +21,64 @@ const DuenioForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validarFormulario = async (formData) => {
+    // Validar que todos los campos estén completos
+    const { nombre, apellido, telefono, email, direccion } = formData;
+    if (!nombre || !apellido || !telefono || !email || !direccion) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Todos los campos son obligatorios.",
+        confirmButtonColor: "#d33",
+      });
+      return false;
+    }
+  
+    // Validación de formato de email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Por favor ingresa un correo electrónico válido.",
+        confirmButtonColor: "#d33",
+      });
+      return false;
+    }
+  
+    // Verificar si el dueño ya existe
+    try {
+      const response = await duenioService.checkIfDuenioExists(email); // Verificar existencia de dueño por email
+      if (response.exists) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "El dueño con este correo electrónico ya existe.",
+          confirmButtonColor: "#d33",
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error al verificar dueño:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo verificar si el dueño ya existe. Intenta nuevamente.",
+        confirmButtonColor: "#d33",
+      });
+      return false;
+    }
+  
+    return true; // Si todo está bien, devuelve true
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isValid = await validarFormulario(formData); // Llamamos a la validación
+    if (!isValid) {
+      return; // Si la validación falla, no enviamos el formulario
+    }
+
     try {
       await duenioService.create(formData);
 
@@ -67,19 +123,19 @@ const DuenioForm = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label text-white">Nombre</label>
-              <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
+              <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label text-white">Apellido</label>
-              <input type="text" className="form-control" name="apellido" value={formData.apellido} onChange={handleChange} required />
+              <input type="text" className="form-control" name="apellido" value={formData.apellido} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label text-white">Teléfono</label>
-              <input type="text" className="form-control" name="telefono" value={formData.telefono} onChange={handleChange} required />
+              <input type="text" className="form-control" name="telefono" value={formData.telefono} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label text-white">Email</label>
-              <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
+              <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label text-white">Dirección</label>
